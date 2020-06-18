@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">StepCounter_V3</string>
+    <string name="to_graph">To Graph</string>
+    <string name="label_steps">Step Counter: %1$.1f</string>
+    <string name="label_detector">Detector: %1$.1f</string>
+    <string name="label_counter">%1$.1f</string>
+    <string name="title_activity_graph">GraphActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="home">HOME</string>
+    <string name="save">Save</string>
+</resources>

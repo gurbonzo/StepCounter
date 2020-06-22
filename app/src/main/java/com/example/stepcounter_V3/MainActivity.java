@@ -21,6 +21,8 @@ import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    //just added this line to make a difference between local git master and branch as I accidentally
+    //pushed the changes to the master locally.
     private SensorManager mSensorManager;
     private Sensor mStepCounter;
     private Sensor mStepDetector;

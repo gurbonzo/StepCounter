@@ -5,8 +5,10 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -38,3 +40,4 @@ public interface StepDao
     public void updateSteps(float newSteps, int thisDay, int thisYear); //not sure if the array
     //will work
 }
+

@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
+
+import java.util.Date;
 
 @Entity(tableName = "step_table", primaryKeys = {"day", "year"})
 public class Step
@@ -23,10 +27,15 @@ public class Step
     @ColumnInfo(name = "day")
     private int mDay;
 
-    public Step(@NonNull int year, @NonNull int day, @NonNull float step)
+    @NonNull
+    @ColumnInfo(name = "date")
+    private Date date;
+
+    public Step(@NonNull int year, @NonNull int day, @NonNull Date date, @NonNull float step)
     {
         this.mYear = year;
         this.mDay = day;
+        this.date = date;
         this.mStep = step;
 
     }
@@ -50,6 +59,8 @@ public class Step
     {
         return this.mDay;
     }
+
+    public Date getDate() {return this.date;}
 
 
 

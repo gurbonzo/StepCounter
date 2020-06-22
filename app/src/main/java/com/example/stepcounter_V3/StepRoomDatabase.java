@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Step.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class StepRoomDatabase extends RoomDatabase
 {
     public abstract StepDao stepDao();

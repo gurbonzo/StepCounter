@@ -16,4 +16,6 @@
     <string name="home">HOME</string>
     <string name="save">Save</string>
     <string name="action_settings">action_settings</string>
+    <string name="averageSteps">Average Steps: %1.2f</string>
+    <string name="maxSteps">Max Steps: %1.2f</string>
 </resources>

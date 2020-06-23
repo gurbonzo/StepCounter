@@ -21,8 +21,6 @@ import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    //just added this line to make a difference between local git master and branch as I accidentally
-    //pushed the changes to the master locally.
     private SensorManager mSensorManager;
     private Sensor mStepCounter;
     private Sensor mStepDetector;
@@ -195,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         int sensorType = event.sensor.getType();
         float currentValue = event.values[0];
 
+        /*
             mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
                 Calendar calendar = Calendar.getInstance();
                 Date date = calendar.getTime();
@@ -204,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 mStepViewModel.insert(step);
             stepValue += currentValue;
             mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
+
+         */
 
 
     }

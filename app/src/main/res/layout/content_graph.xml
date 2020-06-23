@@ -32,6 +32,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.844" />
 
+    <TextView
+        android:id="@+id/maxSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="392dp"
+        android:text="@string/maxSteps"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="38dp" />
+
+    <TextView
+        android:id="@+id/minSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:text="Minimum Steps: %1.2f"
+        app:layout_constraintTop_toBottomOf="@id/maxSteps" />
+
+    <TextView
+        android:id="@+id/averageSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/averageSteps"
+        app:layout_constraintTop_toBottomOf="@id/minSteps" />
+    
+    <TextView
+        android:id="@+id/weeklyAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Steps last week: %1.2f"
+        app:layout_constraintTop_toBottomOf="@id/averageSteps" />
+
     <com.jjoe64.graphview.GraphView
         android:layout_width = "match_parent"
         android:layout_height = "200dip"

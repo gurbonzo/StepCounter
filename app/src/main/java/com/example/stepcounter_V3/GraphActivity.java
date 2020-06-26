@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -31,8 +33,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
@@ -48,15 +52,24 @@ public class GraphActivity extends AppCompatActivity {
     ArrayList<Step> stepsTaken;
     ArrayList<Step> copyStepsTaken;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    private RecyclerView mRecyclerView;
+    private StepAdapter mAdapter;
+    //private final LinkedList<String> mWordList = new LinkedList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        graph = (GraphView) findViewById(R.id.graph);
+        //graph = (GraphView) findViewById(R.id.graph);
 
-        final StepListAdapter adapter = new StepListAdapter(this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final StepAdapter adapter = new StepAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //final StepListAdapter adapter = new StepListAdapter(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();
@@ -104,10 +117,10 @@ public class GraphActivity extends AppCompatActivity {
                     }
 
                     if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-                        averageStepCounter = (TextView) findViewById(R.id.averageSteps);
-                        maxSteps = (TextView) findViewById(R.id.maxSteps);
-                        minSteps = (TextView) findViewById(R.id.minSteps);
-                        averageWeeklySteps = (TextView) findViewById(R.id.weeklyAverage);
+                        //averageStepCounter = (TextView) findViewById(R.id.averageSteps);
+                        //maxSteps = (TextView) findViewById(R.id.maxSteps);
+                        //minSteps = (TextView) findViewById(R.id.minSteps);
+                        //averageWeeklySteps = (TextView) findViewById(R.id.weeklyAverage);
                         float totalSteps = 0;
                         float maxValue = 0;
                         float minValue = 0;
@@ -130,14 +143,18 @@ public class GraphActivity extends AppCompatActivity {
 
 
 
+
                         }
                         float averageSteps = totalSteps / stepsTaken.size();
+                        List<String> info = Collections.singletonList(getResources().getString(R.string.averageSteps, averageSteps));
+                        adapter.setInfo(info);
 
-                        averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
-                        maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
+                        //averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
+                        //maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
                     }
 
 
+                    /*
                     stepSeries.resetData(stepData);
                     stepLineSeries.resetData(stepData);
                     graph.addSeries(stepLineSeries);
@@ -162,6 +179,8 @@ public class GraphActivity extends AppCompatActivity {
                     graph.getGridLabelRenderer().setHumanRounding(false);
                     stepSeries.setShape(PointsGraphSeries.Shape.POINT);
                     stepSeries.setColor(Color.RED);
+
+                     */
 
 
                 }   //add code for graph to update itself as it gets new data here

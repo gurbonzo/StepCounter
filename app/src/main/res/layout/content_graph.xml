@@ -6,6 +6,24 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        tools:listitem="@layout/portrait_item">
+    </androidx.recyclerview.widget.RecyclerView>
+
+   <!-- <TextView
+        android:id="@+id/maxSteps2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+         />
+         -->
+
+    <!--
     <Button
         android:id="@+id/goHome"
         android:layout_width="wrap_content"
@@ -55,7 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/averageSteps"
         app:layout_constraintTop_toBottomOf="@id/minSteps" />
-    
+
     <TextView
         android:id="@+id/weeklyAverage"
         android:layout_width="wrap_content"
@@ -78,5 +96,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-         />
+         /> -->
 </androidx.constraintlayout.widget.ConstraintLayout>

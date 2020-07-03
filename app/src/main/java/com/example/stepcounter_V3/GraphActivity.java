@@ -54,6 +54,7 @@ public class GraphActivity extends AppCompatActivity {
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
     private RecyclerView mRecyclerView;
     private StepAdapter mAdapter;
+    private ArrayList <PointsGraphSeries> portraitItemList;
     //private final LinkedList<String> mWordList = new LinkedList<>();
 
 
@@ -73,6 +74,8 @@ public class GraphActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();
+        portraitItemList = new ArrayList<PointsGraphSeries>();
+
 
 
 
@@ -146,8 +149,10 @@ public class GraphActivity extends AppCompatActivity {
 
                         }
                         float averageSteps = totalSteps / stepsTaken.size();
-                        List<String> info = Collections.singletonList(getResources().getString(R.string.averageSteps, averageSteps));
-                        adapter.setInfo(info);
+                        //String info = getResources().getString(R.string.averageSteps, averageSteps);
+                        //portraitItemList.add(averageSteps);
+                        //portraitItemList.add(steps);
+
 
                         //averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
                         //maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
@@ -181,6 +186,9 @@ public class GraphActivity extends AppCompatActivity {
                     stepSeries.setColor(Color.RED);
 
                      */
+                    //portraitItemList.add(stepLineSeries);
+                    portraitItemList.add(stepSeries);
+                    adapter.setInfo(portraitItemList);
 
 
                 }   //add code for graph to update itself as it gets new data here

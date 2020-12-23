@@ -50,6 +50,7 @@ public class GraphActivity extends AppCompatActivity {
     ArrayList<Step> stepsTaken;
     ArrayList<Step> copyStepsTaken;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    private ArrayList<PointsGraphSeries> portraitItemList;
 
 
     @Override

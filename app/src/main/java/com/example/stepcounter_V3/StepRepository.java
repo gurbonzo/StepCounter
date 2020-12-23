@@ -23,7 +23,8 @@ public class StepRepository
     {
         return mAllSteps;
     }
-
+      //the adapter should call directly to here i think
+    //this method sends a StepDao object and step object information to the inner class intertAsyncTask in this class and activates the "execute" method
     public void insert (Step step)
     {
         new insertAsyncTask(mStepDao).execute(step);
@@ -59,7 +60,9 @@ public class StepRepository
 
 
 
-
+    //class that runs asynchronously from the main thread. Through the Dao can only access the database asynchronously. Asynchronous tasks allow the user to continue to swipe & scroll, etc. without freezing
+    //if putting data into the database takes too long. In this case, it's also mandatory to have a asynchronous task querying the database as that is what the dao requires to work.
+    //if you wanted to query the database on the main thread, you would have to explicitly state so in the Database class.
     private static class insertAsyncTask extends AsyncTask<Step, Void, Void>
     {
         private StepDao mAsyncTaskDao;
@@ -69,23 +72,26 @@ public class StepRepository
 
         }
 
+        //the method that is working asynchronously
         @Override
         protected Void doInBackground(final Step... steps)
         {
-            int day = steps[0].getDay();
-            int year = steps[0].getYear();
-            boolean result = mAsyncTaskDao.getStep2(day, year);
+            int day = steps[0].getDay(); // extracting the day from the step object in the 0 position of the steps array.
+            int year = steps[0].getYear(); //extracting the year from the step onject in the 0 position of the steps array.
+            boolean result = mAsyncTaskDao.getStep2(day, year); // querying the database to see if such an object already exists
             if (result == true)
             {
-                float value = mAsyncTaskDao.getSteps(day, year);
-                value += steps[0].getStep();
-                mAsyncTaskDao.updateSteps(value, day, year);
+                float value = mAsyncTaskDao.getSteps(day, year); //getting the # of steps from object that already exists
+                value += steps[0].getStep(); //adding new amount of steps to the original amount -will only be 1 step added at a time because the code is activated after each step is detected.
+                mAsyncTaskDao.updateSteps(value, day, year); //insert the new object with the increased number of steps back into the database.
+                //send directly to the step adapter here??
             }
-            else
+            else //if no object exists in the databse with the same day and year information then a new object is inserted into the database.
             {
                 mAsyncTaskDao.insert(steps[0]);
+                //send directly to the step adapter here??
             }
-            return null;
+            return null; //no real functionality as far as I can tell, just required as part of the doInBackground code
         }
 
 

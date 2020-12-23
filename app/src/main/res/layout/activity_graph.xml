@@ -20,6 +20,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.support.v7.widget.RecyclerView>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

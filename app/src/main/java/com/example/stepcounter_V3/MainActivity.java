@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    //this method starts the GraphActivity
     public void graph(View view)
     {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    //the below method saves the example data into the database
     public void onButtonPressed(View view) {
 
 
@@ -107,26 +109,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //date = calendar.add(Calendar.DAY_OF_MONTH, 1);
                 //int day = calendar.get(Calendar.DAY_OF_MONTH);
                 //int year = calendar.get(Calendar.YEAR);
-                int day1 = 17;
+                int day1 = 0;
                 int year1 = 2020;
-                float step1 = 20;
-                Step step = new Step(year1, day1, date, step1);
-                mStepViewModel.insert(step);
-                int day2 = 18;
+                float step1 = 0;
+                Step step = new Step(year1, day1, date, step1); // creating a step object that contains the year, day, date, and step information
+                mStepViewModel.insert(step); //putting the step object into the StepViewModel through the insert method
+                int day2 = 2;
                 int year2 = 2020;
-                float steps2 = 20;
+                float steps2 = 1;
                 Date date2 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
                 Step step2 = new Step(year2, day2, date2, steps2);
                 mStepViewModel.insert(step2);
-                int day3 = 19;
+                int day3 = 3;
                 int year3 = 2020;
-                float steps3 = 20;
+                float steps3 = 3;
                 Date date3 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
                 Step step3 = new Step(year3, day3, date3, steps3);
                 mStepViewModel.insert(step3);
-        int day4 = 20;
+        int day4 = 4;
         int year4 = 2020;
         float steps4 = 10;
         Date date4 = calendar.getTime();

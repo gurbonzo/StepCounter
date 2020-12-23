@@ -27,6 +27,7 @@ public class StepViewModel extends AndroidViewModel
 
 
 
+    //method that sends the step object to the StepRepository
     public void insert(Step step)
     {
         mRepository.insert(step);

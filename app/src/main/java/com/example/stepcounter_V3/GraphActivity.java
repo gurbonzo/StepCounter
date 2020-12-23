@@ -62,6 +62,7 @@ public class GraphActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();
+        portraitItemList = new ArrayList<PointsGraphSeries>();
 
 
 

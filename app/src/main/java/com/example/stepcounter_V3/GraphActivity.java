@@ -56,7 +56,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         graph = (GraphView) findViewById(R.id.graph);
 
-        final StepListAdapter adapter = new StepListAdapter(this);
+        final StepAdapter adapter = new StepAdapter(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();

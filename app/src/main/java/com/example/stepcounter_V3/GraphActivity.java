@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -56,7 +58,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         graph = (GraphView) findViewById(R.id.graph);
 
-        final StepAdapter adapter = new StepAdapter(this);
+        //final StepAdapter adapter = new StepAdapter(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();
@@ -167,6 +169,12 @@ public class GraphActivity extends AppCompatActivity {
                 }   //add code for graph to update itself as it gets new data here
             }
         });
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
+        final StepAdapter adapter = new StepAdapter(this, portraitItemList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
 
 

@@ -43,10 +43,10 @@ public class GraphActivity extends AppCompatActivity {
     private PointsGraphSeries<DataPoint> stepSeries;
     private LineGraphSeries<DataPoint> stepLineSeries;
     private GraphView graph;
-    private TextView averageStepCounter;
-    private TextView maxSteps;
-    private TextView minSteps;
-    private TextView averageWeeklySteps;
+   // private TextView averageStepCounter;
+   // private TextView maxSteps;
+   // private TextView minSteps;
+   // private TextView averageWeeklySteps;
     ArrayList<Step> stepsTaken;
     ArrayList<Step> copyStepsTaken;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
@@ -107,11 +107,12 @@ public class GraphActivity extends AppCompatActivity {
                         stepData[i] = stepPoint;
                     }
 
-                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-                        averageStepCounter = (TextView) findViewById(R.id.averageSteps);
-                        maxSteps = (TextView) findViewById(R.id.maxSteps);
-                        minSteps = (TextView) findViewById(R.id.minSteps);
-                        averageWeeklySteps = (TextView) findViewById(R.id.weeklyAverage);
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    {
+                       // averageStepCounter = (TextView) findViewById(R.id.averageSteps);
+                       // maxSteps = (TextView) findViewById(R.id.maxSteps);
+                       // minSteps = (TextView) findViewById(R.id.minSteps);
+                       // averageWeeklySteps = (TextView) findViewById(R.id.weeklyAverage);
                         float totalSteps = 0;
                         float maxValue = 0;
                         float minValue = 0;
@@ -137,8 +138,8 @@ public class GraphActivity extends AppCompatActivity {
                         }
                         float averageSteps = totalSteps / stepsTaken.size();
 
-                        averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
-                        maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
+                        //averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
+                        //maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
                     }
 
 

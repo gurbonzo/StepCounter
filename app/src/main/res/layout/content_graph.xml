@@ -32,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.844" />
 
+    <!--
     <TextView
         android:id="@+id/maxSteps"
         android:layout_width="wrap_content"
@@ -62,6 +63,8 @@
         android:layout_height="wrap_content"
         android:text="Average Steps last week: %1.2f"
         app:layout_constraintTop_toBottomOf="@id/averageSteps" />
+
+        -->
 
     <com.jjoe64.graphview.GraphView
         android:layout_width = "match_parent"

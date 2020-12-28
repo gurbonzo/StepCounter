@@ -107,41 +107,6 @@ public class GraphActivity extends AppCompatActivity {
                         stepData[i] = stepPoint;
                     }
 
-                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                    {
-                       // averageStepCounter = (TextView) findViewById(R.id.averageSteps);
-                       // maxSteps = (TextView) findViewById(R.id.maxSteps);
-                       // minSteps = (TextView) findViewById(R.id.minSteps);
-                       // averageWeeklySteps = (TextView) findViewById(R.id.weeklyAverage);
-                        float totalSteps = 0;
-                        float maxValue = 0;
-                        float minValue = 0;
-                        for(int j = 0; j < steps.size(); j++)
-                        {
-                            totalSteps += stepsTaken.get(j).getStep();
-                            float newValue = stepsTaken.get(j).getStep();
-                            if (newValue > maxValue)
-                            {
-                                maxValue = newValue;
-                            }
-                            for(int k = j +1; k < steps.size(); k++)
-                            {
-                                if(copyStepsTaken.get(j).getStep() > copyStepsTaken.get(k).getStep())
-                                {
-                                    minValue = copyStepsTaken.get(j).getStep();
-                                    //copyStepsTaken.get(j).getStep() = copyStepsTaken.get(k).getStep();
-                                }
-                            }
-
-
-
-                        }
-                        float averageSteps = totalSteps / stepsTaken.size();
-
-                        //averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
-                        //maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
-                    }
-
 
                     stepSeries.resetData(stepData);
                     stepLineSeries.resetData(stepData);

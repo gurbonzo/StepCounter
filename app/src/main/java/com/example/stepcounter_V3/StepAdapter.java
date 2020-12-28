@@ -33,9 +33,10 @@ public class StepAdapter extends RecyclerView.Adapter {
     private List<Step> steps;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
-    public StepAdapter(Context context)
+    public StepAdapter(Context context, ArrayList<PointsGraphSeries> portraitItemList)
     {
         inflater = LayoutInflater.from(context);
+        this.portraitItemList = portraitItemList;
 
     }
 
@@ -116,12 +117,14 @@ public class StepAdapter extends RecyclerView.Adapter {
     }
 
 
+    /**
     void setInfo(ArrayList info)
     {
         portraitItemList = info;
         //this.steps = (List<Step>) portraitItemList.get(1);
         notifyDataSetChanged();
     }
+     **/
 
     @Override
     public int getItemCount() {

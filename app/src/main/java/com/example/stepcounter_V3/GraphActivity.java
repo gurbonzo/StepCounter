@@ -65,10 +65,12 @@ public class GraphActivity extends AppCompatActivity {
         //graph = (GraphView) findViewById(R.id.graph);
 
 
+        /**
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final StepAdapter adapter = new StepAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+         **/
 
         //final StepListAdapter adapter = new StepListAdapter(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -119,7 +121,8 @@ public class GraphActivity extends AppCompatActivity {
                         stepData[i] = stepPoint;
                     }
 
-                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                    /**if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    {
                         //averageStepCounter = (TextView) findViewById(R.id.averageSteps);
                         //maxSteps = (TextView) findViewById(R.id.maxSteps);
                         //minSteps = (TextView) findViewById(R.id.minSteps);
@@ -157,9 +160,10 @@ public class GraphActivity extends AppCompatActivity {
                         //averageStepCounter.setText(getResources().getString(R.string.averageSteps, averageSteps));
                         //maxSteps.setText(getResources().getString(R.string.maxSteps, maxValue));
                     }
+                     **/
 
 
-                    /*
+
                     stepSeries.resetData(stepData);
                     stepLineSeries.resetData(stepData);
                     graph.addSeries(stepLineSeries);
@@ -185,15 +189,25 @@ public class GraphActivity extends AppCompatActivity {
                     stepSeries.setShape(PointsGraphSeries.Shape.POINT);
                     stepSeries.setColor(Color.RED);
 
-                     */
+
                     //portraitItemList.add(stepLineSeries);
                     portraitItemList.add(stepSeries);
-                    adapter.setInfo(portraitItemList);
+                    //adapter.setInfo(portraitItemList);
 
 
                 }   //add code for graph to update itself as it gets new data here
             }
         });
+
+        
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final StepAdapter adapter = new StepAdapter(this, portraitItemList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
 
 
 

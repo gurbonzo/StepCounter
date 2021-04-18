@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    public void graph(View view)
+    public void graph(View view) // not sure how graph is called...may need to look into this
     {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
         startActivity(intent);

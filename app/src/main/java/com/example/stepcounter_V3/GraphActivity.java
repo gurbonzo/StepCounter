@@ -26,6 +26,7 @@ import com.jjoe64.graphview.series.Series;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
@@ -55,6 +56,7 @@ public class GraphActivity extends AppCompatActivity {
     private static final String TAG = "GRAPHACTIVITY";
     //Series[] seriesArray = new Series[2];
     //DataPoint [] stepData ;
+    int[] yValues;
 
 
 
@@ -72,11 +74,17 @@ public class GraphActivity extends AppCompatActivity {
         stepSeries = new PointsGraphSeries();
         stepLineSeries = new LineGraphSeries();
 
+        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
+        final StepAdapter adapter = new StepAdapter(this, portraitItemList2);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         nStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
         nStepViewModel.getAllSteps().observe(this, new Observer<List<Step>>() {
             @Override
             public void onChanged(@Nullable final List<Step> steps) {
                 // Update the cached copy of the words in the adapter.
+                //adapter.setInfo(steps);
 
 
                 stepsTaken = new ArrayList<Step>();
@@ -100,6 +108,7 @@ public class GraphActivity extends AppCompatActivity {
                         Date xValue = steps.get(i).getDate();
 
                         int yValue = (int) steps.get(i).getStep();
+                        yValues[i] = yValue;
 
                         DataPoint stepPoint = new DataPoint(xValue, yValue);
                         stepData[i] = stepPoint;
@@ -112,33 +121,34 @@ public class GraphActivity extends AppCompatActivity {
 
 
 
-                    seriesArrayList.add(stepSeries);
-                    seriesArrayList.add(stepLineSeries);
-                    portraitItemList2.add(seriesArrayList);
+                    //seriesArrayList.add(stepSeries);
+                    //seriesArrayList.add(stepLineSeries);
+                    //portraitItemList2.add(seriesArrayList);
+                    portraitItemList2.add(stepSeries);
+                    portraitItemList2.add(stepLineSeries);
+
+                    adapter.setInfo(portraitItemList2);
+                    //could I just send the stepData as the array DataPoint? Nov. 22, 2021
+                    //adapter.setInfo(portraitItemList2);
 
 
 
-                    //portraitItemList.add(graph);
 
                 }   //add code for graph to update itself as it gets new data here
             }
         });
 
-        //stepSeries.setShape(PointsGraphSeries.Shape.POINT);
-        //stepSeries.setColor(Color.RED);
-        //stepSeries.resetData(stepData);
-        //stepLineSeries.resetData(stepData);
-        //seriesArrayList.add(stepSeries);
-        //seriesArrayList.add(stepLineSeries);
-        //portraitItemList2.add(seriesArrayList);
-        //portraitItemList.add(graph);
-        //portraitItemList2.add(seriesArrayList);
 
-        Log.d(TAG, String.valueOf((seriesArrayList.get(0))));
-        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
-        final StepAdapter adapter = new StepAdapter(this, seriesArrayList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        for(int i = 0)
+        {
+            float check = stepsTaken.get(i).getStep();
+            Toast.makeText(this, (int) check, Toast.LENGTH_LONG).show();
+
+        }
+
+        //Log.d(TAG, String.valueOf((seriesArrayList.get(0))));
+
 
 
 

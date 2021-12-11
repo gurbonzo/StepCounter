@@ -42,11 +42,11 @@ public abstract class StepRoomDatabase extends RoomDatabase
                 @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
-                   // new PopulateDbAsync(INSTANCE).execute();
+                    new PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
-   /* private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>
     {
         private final StepDao mDao;
 
@@ -60,11 +60,16 @@ public abstract class StepRoomDatabase extends RoomDatabase
         {
            if (mDao.getAnyStep().length < 1)
            {
+               for (int i = 0; i <= steps.length - 1; i++) {
+                   Step step = new Step(steps[i]);
+                   mDao.insert(step);
+               }
 
-           }
+
+               }
            return null;
         }
     }
 
-    */
+
 }

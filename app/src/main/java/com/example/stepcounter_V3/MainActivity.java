@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    public void graph(View view) // not sure how graph is called...may need to look into this
+    public void graph(View view) // not sure how graph is called...may need to look into this...(I think it is called from the button, similar
+            //to onButtonPressed below)
     {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
         startActivity(intent);
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float step1 = 20;
                 Step step = new Step(year1, day1, date, step1);
                 mStepViewModel.insert(step);
+                Intent replyIntent = new Intent();
+                replyIntent.putE
                 int day2 = 18;
                 int year2 = 2020;
                 float steps2 = 20;

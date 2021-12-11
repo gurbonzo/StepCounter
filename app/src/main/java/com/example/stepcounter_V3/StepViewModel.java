@@ -11,16 +11,16 @@ import java.util.concurrent.ExecutionException;
 public class StepViewModel extends AndroidViewModel
 {
     private StepRepository mRepository;
-    private LiveData<List<Step>> mAllSteps; //LiveData
+    private LiveData<List<Step>> mAllSteps;
 
     public StepViewModel (Application application)
     {
         super(application);
         mRepository = new StepRepository(application);
-        mAllSteps = mRepository.getAllSteps(); // maybe here?
+        mAllSteps = mRepository.getAllSteps();
     }
 
-    LiveData<List<Step>> getAllSteps()
+    public LiveData<List<Step>> getAllSteps()
     {
         return mAllSteps;
     }

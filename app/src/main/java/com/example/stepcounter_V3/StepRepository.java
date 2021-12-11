@@ -72,14 +72,15 @@ public class StepRepository
         @Override
         protected Void doInBackground(final Step... steps)
         {
-            int day = steps[0].getDay();
-            int year = steps[0].getYear();
-            boolean result = mAsyncTaskDao.getStep2(day, year);
-            if (result == true)
+            int day = steps[0].getDay(); //takes the day stamp from the steps object
+            int year = steps[0].getYear(); //takes the year stamp from the steps object
+            boolean result = mAsyncTaskDao.getStep2(day, year); //looks for an object that already exists with the same day and year variables
+            if (result == true) //if such an object exists, the result is true and the if statement is executed, if not, the else statement is executed
             {
-                float value = mAsyncTaskDao.getSteps(day, year);
-                value += steps[0].getStep();
-                mAsyncTaskDao.updateSteps(value, day, year);
+                float value = mAsyncTaskDao.getSteps(day, year); //value variable represents the number of steps taken from the object in the array with the appropriate day and year
+                value += steps[0].getStep(); //adds the number of steps from the "steps" object to the value
+
+                mAsyncTaskDao.updateSteps(value, day, year); //puts the updated object back into place in the array.
             }
             else
             {

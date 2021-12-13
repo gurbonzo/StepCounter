@@ -12,6 +12,9 @@ import java.util.Date;
 @Entity(tableName = "step_table", primaryKeys = {"day", "year"})
 public class Step
 {
+    @NonNull
+    @ColumnInfo(name = "Step")
+    private Step objectStep;
 
     @NonNull
     @ColumnInfo(name = "step")
@@ -37,6 +40,7 @@ public class Step
         this.mDay = day;
         this.date = date;
         this.mStep = step;
+        this.objectStep = new Step(mYear, mDay, date, step);
 
     }
 

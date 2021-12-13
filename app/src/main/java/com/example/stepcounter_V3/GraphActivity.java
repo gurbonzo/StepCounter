@@ -74,10 +74,10 @@ public class GraphActivity extends AppCompatActivity {
         stepSeries = new PointsGraphSeries();
         stepLineSeries = new LineGraphSeries();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
-        final StepAdapter adapter = new StepAdapter(this, portraitItemList2);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
+        //final StepAdapter adapter = new StepAdapter(this, portraitItemList2);
+        //recyclerView.setAdapter(adapter);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         nStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
         nStepViewModel.getAllSteps().observe(this, new Observer<List<Step>>() {
@@ -127,7 +127,7 @@ public class GraphActivity extends AppCompatActivity {
                     portraitItemList2.add(stepSeries);
                     portraitItemList2.add(stepLineSeries);
 
-                    adapter.setInfo(portraitItemList2);
+                   // adapter.setInfo(portraitItemList2);
                     //could I just send the stepData as the array DataPoint? Nov. 22, 2021
                     //adapter.setInfo(portraitItemList2);
 
@@ -140,12 +140,7 @@ public class GraphActivity extends AppCompatActivity {
 
 
 
-        for(int i = 0)
-        {
-            float check = stepsTaken.get(i).getStep();
-            Toast.makeText(this, (int) check, Toast.LENGTH_LONG).show();
 
-        }
 
         //Log.d(TAG, String.valueOf((seriesArrayList.get(0))));
 

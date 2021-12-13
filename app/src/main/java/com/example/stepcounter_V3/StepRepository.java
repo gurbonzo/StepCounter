@@ -29,35 +29,6 @@ public class StepRepository
         new insertAsyncTask(mStepDao).execute(step);
     }
 
-    /*public void update (Step step)
-    {
-        new updateAsyncTask(mStepDao).execute(step);
-    }
-
-     */
-
-
-
-    /*public void getStep3(Step step)  {
-
-        //return new getStep2AsyncTask(mStepDao).execute(step);
-    }
-
-     */
-
-    /*public boolean getSteps(Step step)
-    {
-        boolean result = Boolean.parseBoolean(String.valueOf(new getStepsAsyncTask(mStepDao).execute(step)));
-        return result;
-
-        //return mStepDao.getSteps(day, year);
-
-    }
-
-     */
-
-
-
 
 
     private static class insertAsyncTask extends AsyncTask<Step, Void, Void>

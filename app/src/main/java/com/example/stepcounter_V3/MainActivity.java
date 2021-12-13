@@ -1,7 +1,11 @@
 package com.example.stepcounter_V3;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +20,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -43,10 +58,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public static final String EXTRA_REPLY =
             "com.example.stepcounter_V3.REPLY";
 
+    private PointsGraphSeries<DataPoint> stepSeries;
+    private LineGraphSeries<DataPoint> stepLineSeries;
+    private GraphView graph;
+
+    ArrayList<Step> stepsTaken;
+    ArrayList<Step> copyStepsTaken;
+    final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    private ArrayList<GraphView> portraitItemList;
+    private LinkedList portraitItemList2 = new LinkedList();
+    ArrayList <Series> seriesArrayList = new ArrayList<>();
+    private static final String TAG = "GRAPHACTIVITY";
+    int[] yValues;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_graph);
+        graph = (GraphView) findViewById(R.id.graph);
         valueCollect = 0;
         mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mTextStepCounter = (TextView)findViewById(R.id.label_steps);
@@ -57,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //look into the documentation for this counter
         mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         String sensor_error = "No sensor";
-        // Setup the WordViewModel
-        mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
+
+
         /*if(mStepCounter == null)
         {
             mTextStepCounter.setText(sensor_error);
@@ -72,6 +104,78 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
          //button = findViewById(R.id.button_save);
 
         //Toast.makeText(getApplicationContext(), "onCreate initialized", Toast.LENGTH_LONG).show();
+
+
+        // Setup the WordViewModel
+        mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
+        final StepAdapter adapter = new StepAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
+        mStepViewModel.getAllSteps().observe(this, new Observer<List<Step>>() {
+            @Override
+            public void onChanged(@Nullable final List<Step> steps) {
+                // Update the cached copy of the words in the adapter.
+                //adapter.setInfo(steps);
+
+
+                //stepsTaken = new ArrayList<Step>();
+                //copyStepsTaken = new ArrayList<Step>();
+                //DataPoint[] stepData = new DataPoint[steps.size()];
+
+                if(steps.size() == 0)
+                {
+                    //Toast.makeText(this, "No steps taken yet", Toast.LENGTH_LONG).show();
+                    //do nothing
+                }
+                else {
+
+                    stepsTaken = new ArrayList<Step>();
+                    copyStepsTaken = new ArrayList<Step>();
+                    DataPoint[] stepData = new DataPoint[steps.size()];
+
+
+
+                    for (int i = 0; i < steps.size(); i++) {
+                        //int xValue = steps.get(i).getDay();
+                        //DataPoint[] stepData = new DataPoint[steps.size()];
+                        stepsTaken.add(steps.get(i));
+                        copyStepsTaken.add(steps.get(i));
+                        //String xValue = sdf.format(steps.get(i).getDate());
+                        Date xValue = steps.get(i).getDate();
+
+                        int yValue = (int) steps.get(i).getStep();
+                        //yValues[i] = yValue;
+
+                        DataPoint stepPoint = new DataPoint(xValue, yValue);
+                        stepData[i] = stepPoint;
+                    }
+
+
+                    stepSeries.resetData(stepData);
+                    stepLineSeries.resetData(stepData);
+
+
+
+
+                    //seriesArrayList.add(stepSeries);
+                    //seriesArrayList.add(stepLineSeries);
+                    //portraitItemList2.add(seriesArrayList);
+                    portraitItemList2.add(stepSeries);
+                    portraitItemList2.add(stepLineSeries);
+
+                    adapter.setInfo(portraitItemList2);
+                    //could I just send the stepData as the array DataPoint? Nov. 22, 2021
+                    //adapter.setInfo(portraitItemList2);
+
+
+
+
+                }   //add code for graph to update itself as it gets new data here
+            }
+        });
     }
 
 
@@ -113,8 +217,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float step1 = 20;
                 Step step = new Step(year1, day1, date, step1);
                 mStepViewModel.insert(step);
-                Intent replyIntent = new Intent();
-                replyIntent.putE
                 int day2 = 18;
                 int year2 = 2020;
                 float steps2 = 20;

@@ -57,10 +57,10 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //private List<Step> steps;
         final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
-        public StepAdapter(Context context, LinkedList items)
+        public StepAdapter(Context context)
         {
             inflater = LayoutInflater.from(context);
-            this.seriesArrayList = new ArrayList<>();
+            //this.seriesArrayList = new ArrayList<>();
 
             //portraitItemList3 = new LinkedList <Object>();
             //portraitItemList3 = portraitItemList2;
@@ -69,7 +69,7 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             {
 
             }**/
-            portraitItemList3 = items;
+
             /**
             this.seriesArrayList = (ArrayList<Series>) seriesArrayList;
             this.stepSeries = (PointsGraphSeries<DataPoint>) this.seriesArrayList.get(0);
@@ -81,6 +81,7 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
 
+        /**
         @Override
         public int getItemViewType(int position) {
 
@@ -98,9 +99,10 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
         }
+         **/
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public GraphViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView;
             //switch (viewType) {
                // case 0:

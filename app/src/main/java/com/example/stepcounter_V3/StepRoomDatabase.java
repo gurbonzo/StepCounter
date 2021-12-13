@@ -10,6 +10,9 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @Database(entities = {Step.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class StepRoomDatabase extends RoomDatabase
@@ -46,30 +49,29 @@ public abstract class StepRoomDatabase extends RoomDatabase
                 }
             };
 
+
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>
     {
         private final StepDao mDao;
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        Step step0 = new Step(2020, 17, date, 20);
 
         public PopulateDbAsync(StepRoomDatabase db)
         {
             mDao = db.stepDao();
         }
 
+
         @Override
-        protected Void doInBackground(final Void... params)
-        {
-           if (mDao.getAnyStep().length < 1)
-           {
-               for (int i = 0; i <= steps.length - 1; i++) {
-                   Step step = new Step(steps[i]);
-                   mDao.insert(step);
-               }
+        protected Void doInBackground(final Void... params) {
 
 
-               }
            return null;
         }
+
     }
+
 
 
 }

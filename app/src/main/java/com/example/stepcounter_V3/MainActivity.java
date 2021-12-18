@@ -1,7 +1,11 @@
 package com.example.stepcounter_V3;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +20,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -37,6 +50,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private StepViewModel mStepViewModel;
     //private Button button;
+
+
+
+   // private PointsGraphSeries<DataPoint> stepSeries;
+   // private LineGraphSeries<DataPoint> stepLineSeries;
+   // private GraphView graph;
+    // private TextView averageStepCounter;
+    // private TextView maxSteps;
+    // private TextView minSteps;
+    // private TextView averageWeeklySteps;
+    ArrayList<Step> stepsTaken;
+    ArrayList<Step> copyStepsTaken;
+    final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    private ArrayList<PointsGraphSeries> portraitItemList;
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
@@ -72,6 +99,60 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
          //button = findViewById(R.id.button_save);
 
         //Toast.makeText(getApplicationContext(), "onCreate initialized", Toast.LENGTH_LONG).show();
+      //  stepSeries = new PointsGraphSeries();
+       // stepLineSeries = new LineGraphSeries();
+
+
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
+        final StepAdapter adapter = new StepAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
+        mStepViewModel.getAllSteps().observe(this, new Observer<List<Step>>() {
+            @Override
+            public void onChanged(@Nullable final List<Step> steps) {
+                // Update the cached copy of the words in the adapter.
+
+
+
+
+                stepsTaken = new ArrayList<Step>();
+                copyStepsTaken = new ArrayList<Step>();
+                DataPoint [] stepData = new DataPoint[steps.size()];
+
+                if(steps.size() == 0)
+                {
+                    //Toast.makeText(this, "No steps taken yet", Toast.LENGTH_LONG).show();
+                    //do nothing
+                }
+                else {
+
+
+                    for (int i = 0; i < steps.size(); i++) {
+                        //int xValue = steps.get(i).getDay();
+                        stepsTaken.add(steps.get(i));
+                        copyStepsTaken.add(steps.get(i));
+                        //String xValue = sdf.format(steps.get(i).getDate());
+                       // Date xValue = steps.get(i).getDate();
+                        int xValue = steps.get(i).getDay();
+
+                        int yValue = (int) steps.get(i).getStep();
+
+                        DataPoint stepPoint = new DataPoint(xValue, yValue);
+                        stepData[i] = stepPoint;
+                    }
+
+
+                   // stepSeries.resetData(stepData);
+                   // stepLineSeries.resetData(stepData);
+                   // graph.addSeries(stepLineSeries);
+                   // graph.addSeries(stepSeries);
+                    adapter.setInfo(stepData);
+                }   //add code for graph to update itself as it gets new data here
+            }
+        });
     }
 
 
@@ -91,12 +172,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    /**
     public void graph(View view)
     {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
         startActivity(intent);
 
     }
+     **/
 
     public void onButtonPressed(View view) {
 
@@ -112,16 +195,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float step1 = 20;
                 Step step = new Step(year1, day1, date, step1);
                 mStepViewModel.insert(step);
-                int day2 = 18;
+                int day2 = 17;
                 int year2 = 2020;
-                float steps2 = 20;
+                float steps2 = 40;
                 Date date2 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
                 Step step2 = new Step(year2, day2, date2, steps2);
                 mStepViewModel.insert(step2);
                 int day3 = 19;
                 int year3 = 2020;
-                float steps3 = 20;
+                float steps3 = 50;
                 Date date3 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
                 Step step3 = new Step(year3, day3, date3, steps3);

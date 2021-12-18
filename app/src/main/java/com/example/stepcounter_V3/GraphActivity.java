@@ -138,10 +138,12 @@ public class GraphActivity extends AppCompatActivity {
             }
         });
 
+        /**
         RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
         final StepAdapter adapter = new StepAdapter(this, portraitItemList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+         **/
 
 
 

@@ -33,7 +33,7 @@ public interface StepDao
     //@Query("UPDATE step_table SET step = :newSteps WHERE year = :thisYear AND day = :thisDay")
     //public void updateSteps(float newSteps, int thisYear, int thisDay);
 
-    @Query("SELECT step FROM step_table WHERE year =:thisYear AND day =:thisDay")
+    @Query("SELECT step FROM step_table WHERE day =:thisDay AND year =:thisYear")
      float getSteps(int thisDay,int thisYear);
 
     @Query("UPDATE step_table SET step = :newSteps WHERE year = :thisYear AND day = :thisDay")

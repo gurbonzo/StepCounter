@@ -18,6 +18,7 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolder> {
@@ -43,6 +44,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
     private LineGraphSeries<DataPoint> stepLineSeries;
     int maxValue;
     int minValue;
+    double testMin;
+    Calendar calendar;
 
         public StepAdapter(Context context)
         {
@@ -176,13 +179,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                 super(graphView);
                 graph = graphView.findViewById(R.id.graph);
 
-                //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext(), dateFormat));
+                graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext(), dateFormat));
                 graph.getGridLabelRenderer().setNumHorizontalLabels(3);
                 graph.getLegendRenderer().setVisible(true);
                 graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-                graph.getViewport().setXAxisBoundsManual(true);
+                //graph.getViewport().setXAxisBoundsManual(true);
                // graph.getViewport().setMinX(0);
                // graph.getViewport().setMaxX(100);
+                /**
                 maxValue = (int)recyclerData[0].getX();
                 for(int i = 0; i < recyclerData.length; i++)
                 {
@@ -192,7 +196,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                     }
 
                 }
-                graph.getViewport().setMaxX(maxValue);
+                testMin = recyclerData[0].getX();
+                 **/
+                graph.getViewport().setMinX(recyclerData[0].getX());
+                graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                /**
                 minValue = (int)recyclerData[0].getX();
                 for(int i = 0; i < recyclerData.length; i++)
                 {
@@ -206,6 +214,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
 
                 //graph.getViewport().setMinX(steps.get(0).getDate().getTime());
                 //graph.getViewport().setMaxX(steps.get(0).getDate().getTime() + 2*24*60*60*1000);
+                 **/
 
                 graph.getViewport().setYAxisBoundsManual(true);
                 graph.getViewport().setMinY(0);

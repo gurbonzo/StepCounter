@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         stepsTaken.add(steps.get(i));
                         copyStepsTaken.add(steps.get(i));
                         //String xValue = sdf.format(steps.get(i).getDate());
-                       // Date xValue = steps.get(i).getDate();
-                        int xValue = steps.get(i).getDay();
+                        Date xValue = steps.get(i).getDate();
+                       // int xValue = steps.get(i).getDay();
 
                         int yValue = (int) steps.get(i).getStep();
 
@@ -187,54 +187,66 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 Calendar calendar = Calendar.getInstance();
                 Date date = calendar.getTime();
-                //date = calendar.add(Calendar.DAY_OF_MONTH, 1);
-                //int day = calendar.get(Calendar.DAY_OF_MONTH);
-                //int year = calendar.get(Calendar.YEAR);
-                int day1 = 17;
-                int year1 = 2020;
+               // date = calendar.add(Calendar.DAY_OF_MONTH, 1);
+                int day1 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year1 = calendar.get(Calendar.YEAR);
+                //int day1 = 17;
+                //int year1 = 2020;
                 float step1 = 20;
                 Step step = new Step(year1, day1, date, step1);
                 mStepViewModel.insert(step);
-                int day2 = 17;
-                int year2 = 2020;
+                //int day2 = 17;
+                //int year2 = 2020;
                 float steps2 = 40;
-                Date date2 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
+                 Date date2 = calendar.getTime();
+                 int day2 = calendar.get(Calendar.DAY_OF_MONTH);
+                 int year2 = calendar.get(Calendar.YEAR);
                 Step step2 = new Step(year2, day2, date2, steps2);
                 mStepViewModel.insert(step2);
-                int day3 = 19;
-                int year3 = 2020;
+                //int day3 = 19;
+                //int year3 = 2020;
                 float steps3 = 50;
-                Date date3 = calendar.getTime();
                 calendar.add(Calendar.DATE, 1);
+                Date date3 = calendar.getTime();
+        int day3 = calendar.get(Calendar.DAY_OF_MONTH);
+        int year3 = calendar.get(Calendar.YEAR);
                 Step step3 = new Step(year3, day3, date3, steps3);
                 mStepViewModel.insert(step3);
-        int day4 = 20;
-        int year4 = 2020;
+        //int day4 = 20;
+        //int year4 = 2020;
         float steps4 = 10;
-        Date date4 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
+        Date date4 = calendar.getTime();
+        int day4 = calendar.get(Calendar.DAY_OF_MONTH);
+        int year4 = calendar.get(Calendar.YEAR);
         Step step4 = new Step(year4, day4, date4, steps4);
         mStepViewModel.insert(step4);
-        int day5 = 21;
-        int year5 = 2020;
+        //int day5 = 21;
+        //int year5 = 2020;
         float steps5 = 20;
-        Date date5 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
+        Date date5 = calendar.getTime();
+        int day5 = calendar.get(Calendar.DAY_OF_MONTH);
+        int year5 = calendar.get(Calendar.YEAR);
         Step step5 = new Step(year5, day5, date5, steps5);
         mStepViewModel.insert(step5);
-        int day6 = 21;
-        int year6 = 2020;
+        //int day6 = 21;
+        //int year6 = 2020;
         float steps6 = 20;
-        Date date6 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
+        Date date6 = calendar.getTime();
+        int day6 = calendar.get(Calendar.DAY_OF_MONTH);
+        int year6 = calendar.get(Calendar.YEAR);
         Step step6 = new Step(year6, day6, date6, steps6);
         mStepViewModel.insert(step6);
-        int day7 = 22;
-        int year7 = 2020;
+        //int day7 = 22;
+        //int year7 = 2020;
         float steps7 = 20;
-        Date date7 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
+        Date date7 = calendar.getTime();
+        int day7 = calendar.get(Calendar.DAY_OF_MONTH);
+        int year7 = calendar.get(Calendar.YEAR);
         Step step7 = new Step(year7, day7, date7, steps7);
         mStepViewModel.insert(step7);
 
@@ -273,21 +285,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        int sensorType = event.sensor.getType();
+       // int sensorType = event.sensor.getType();
         float currentValue = event.values[0];
 
-        /*
-            mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
+
+        /**
+           // mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
                 Calendar calendar = Calendar.getInstance();
                 Date date = calendar.getTime();
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int year = calendar.get(Calendar.YEAR);
                 Step step = new Step(year, day, date, currentValue);
                 mStepViewModel.insert(step);
-            stepValue += currentValue;
-            mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
+           // stepValue += currentValue;
+         //   mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
+         **/
 
-         */
+
 
 
     }

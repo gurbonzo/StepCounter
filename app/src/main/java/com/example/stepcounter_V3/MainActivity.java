@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         float currentValue = event.values[0];
 
 
-        /**
+
            // mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
                 Calendar calendar = Calendar.getInstance();
                 Date date = calendar.getTime();
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 mStepViewModel.insert(step);
            // stepValue += currentValue;
          //   mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
-         **/
+
 
 
 

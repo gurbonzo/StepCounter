@@ -2,6 +2,7 @@ package com.example.stepcounter_V3;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,8 +14,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,8 +37,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private SensorManager mSensorManager;
+public class MainActivity extends AppCompatActivity {
+   // private SensorManager mSensorManager;  Dec. 23, 2021
     private Sensor mStepCounter;
     private Sensor mStepDetector;
 
@@ -71,19 +75,50 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             "com.example.stepcounter_V3.REPLY";
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       switch(item.getItemId())
+       {
+           case R.id.start_stepcounter:
+               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                   startForegroundService(new Intent(this, StepServiceModule.class));
+               }
+               else
+               {
+                   startService(new Intent(this, StepServiceModule.class));
+               }
+           default:
+
+       }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         valueCollect = 0;
-        mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+       // mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE); Dec. 23, 2021
         mTextStepCounter = (TextView)findViewById(R.id.label_steps);
         mTextStepDetector = (TextView)findViewById(R.id.label_detector);
         mTextCounter = (TextView)findViewById(R.id.label_counter);
         mTestDay = (TextView)findViewById(R.id.get_day);
         mTestYear = (TextView)findViewById(R.id.get_year);
         //mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //look into the documentation for this counter
-        mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        String sensor_error = "No sensor";
+       // mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); Dec. 23, 2021
+       // String sensor_error = "No sensor"; Dec. 23, 2021
+        /**
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, StepServiceModule.class));
+        }
+        else
+        {
+            startService(new Intent(this, StepServiceModule.class));
+        }
+         **/
+
+
         // Setup the WordViewModel
         mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
         /*if(mStepCounter == null)
@@ -92,10 +127,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
          */
+        /** Dec. 23, 2021
         if(mStepDetector == null)
         {
             mTextStepDetector.setText(sensor_error);
         }
+         **/
          //button = findViewById(R.id.button_save);
 
         //Toast.makeText(getApplicationContext(), "onCreate initialized", Toast.LENGTH_LONG).show();
@@ -160,16 +197,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onStart() {
         super.onStart();
+
+
        /* if(mStepCounter != null)
         {
             mSensorManager.registerListener(this, mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
         }
 
         */
+       /** Dec. 23, 2021
         if(mStepDetector != null)
         {
             mSensorManager.registerListener(this, mStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        **/
     }
 
     /**
@@ -282,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
          valueCollect = value;
     }
 
+    /** Dec. 23, 2021
     @Override
     public void onSensorChanged(SensorEvent event) {
 
@@ -305,9 +347,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
-
+     **/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    /**
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+    **/
 }

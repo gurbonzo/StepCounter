@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StepCounter_V3</string>
+    <string name="app_name">StepCounter</string>
     <string name="to_graph">To Graph</string>
     <string name="label_steps">Step Counter: %1$.1f</string>
     <string name="label_detector">Detector: %1$.1f</string>

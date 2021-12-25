@@ -4,7 +4,6 @@
     <item
         android:id="@+id/start_stepcounter"
         android:icon="@drawable/ic_start_counting"
-        android:orderInCategory="10"
         app:showAsAction="always"
         android:title="START" />
 

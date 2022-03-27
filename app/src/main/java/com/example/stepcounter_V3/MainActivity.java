@@ -8,8 +8,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -37,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
    // private SensorManager mSensorManager;  Dec. 23, 2021
     private Sensor mStepCounter;
     private Sensor mStepDetector;
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTestDay;
     private TextView mTestYear;
+    FloatingActionButton graphFab;
 
     private float stepValue = 0;
     private float valueCollect;
@@ -74,22 +80,44 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY =
             "com.example.stepcounter_V3.REPLY";
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       switch(item.getItemId())
+
+        switch(item.getItemId())  //comment this out
        {
            case R.id.start_stepcounter:
-               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                   startForegroundService(new Intent(this, StepServiceModule.class));
-               }
-               else
-               {
-                   startService(new Intent(this, StepServiceModule.class));
-               }
-           default:
+           //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             //      startForegroundService(new Intent(MainActivity.this, StepServiceModule.class));
+               //}
+              // else
+               //{
+               startService(new Intent(MainActivity.this, StepServiceModule.class));
 
+               Drawable toolBarIcon = getResources().getDrawable(R.drawable.ic_start_counting);
+               Drawable.ConstantState defaultIcon = item.getIcon().getConstantState();
+               Drawable defaultIcon2 = item.getIcon();
+               //Bitmap bitmap = ((BitmapDrawable)toolBarIcon).getBitmap();
+               //Bitmap bitmap2 = ((BitmapDrawable)defaultIcon2).getBitmap();
+
+                   if(item.getIcon().getConstantState().equals(toolBarIcon.getConstantState()))
+               //if(bitmap == bitmap2)
+                   {
+                       startService(new Intent(MainActivity.this, StepServiceModule.class));
+                       item.setIcon(R.drawable.ic_pause_counting);
+                   }
+                   else
+                   {
+                       item.setIcon(R.drawable.ic_start_counting);
+                   }
+                    //comment this out
+              // }
+          // default:
+
+          // case R.id.pause_stepcounter:
        }
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -105,6 +133,97 @@ public class MainActivity extends AppCompatActivity {
         mTextCounter = (TextView)findViewById(R.id.label_counter);
         mTestDay = (TextView)findViewById(R.id.get_day);
         mTestYear = (TextView)findViewById(R.id.get_year);
+        graphFab = findViewById(R.id.fab);
+
+        graphFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                Date date = calendar.getTime();
+                // date = calendar.add(Calendar.DAY_OF_MONTH, 1);
+                int day1 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year1 = calendar.get(Calendar.YEAR);
+                //int day1 = 17;
+                //int year1 = 2020;
+                float step1 = 20;
+                Step step = new Step(year1, day1, date, step1);
+                mStepViewModel.insert(step);
+                //int day2 = 17;
+                //int year2 = 2020;
+                float steps2 = 40;
+                calendar.add(Calendar.DATE, 1);
+                Date date2 = calendar.getTime();
+                int day2 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year2 = calendar.get(Calendar.YEAR);
+                Step step2 = new Step(year2, day2, date2, steps2);
+                mStepViewModel.insert(step2);
+                //int day3 = 19;
+                //int year3 = 2020;
+                float steps3 = 50;
+                calendar.add(Calendar.DATE, 1);
+                Date date3 = calendar.getTime();
+                int day3 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year3 = calendar.get(Calendar.YEAR);
+                Step step3 = new Step(year3, day3, date3, steps3);
+                mStepViewModel.insert(step3);
+                //int day4 = 20;
+                //int year4 = 2020;
+                float steps4 = 10;
+                calendar.add(Calendar.DATE, 1);
+                Date date4 = calendar.getTime();
+                int day4 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year4 = calendar.get(Calendar.YEAR);
+                Step step4 = new Step(year4, day4, date4, steps4);
+                mStepViewModel.insert(step4);
+                //int day5 = 21;
+                //int year5 = 2020;
+                float steps5 = 20;
+                calendar.add(Calendar.DATE, 1);
+                Date date5 = calendar.getTime();
+                int day5 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year5 = calendar.get(Calendar.YEAR);
+                Step step5 = new Step(year5, day5, date5, steps5);
+                mStepViewModel.insert(step5);
+                //int day6 = 21;
+                //int year6 = 2020;
+                float steps6 = 20;
+                calendar.add(Calendar.DATE, 1);
+                Date date6 = calendar.getTime();
+                int day6 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year6 = calendar.get(Calendar.YEAR);
+                Step step6 = new Step(year6, day6, date6, steps6);
+                mStepViewModel.insert(step6);
+                //int day7 = 22;
+                //int year7 = 2020;
+                float steps7 = 20;
+                calendar.add(Calendar.DATE, 1);
+                Date date7 = calendar.getTime();
+                int day7 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year7 = calendar.get(Calendar.YEAR);
+                Step step7 = new Step(year7, day7, date7, steps7);
+                mStepViewModel.insert(step7);
+
+
+
+
+
+
+                //int day2 = 18;
+                //int year2 = 2020;
+                //float step2 = 40;
+                //Step stepv2 = new Step(year2, day2, step2);
+                // mStepViewModel.insert(stepv2);
+
+
+
+
+                // mTestDay.setText("Day: " + calendar.get(Calendar.DAY_OF_MONTH));
+                //mTestYear.setText("Year: " + calendar.get(Calendar.YEAR));
+
+
+
+            }
+        });
         //mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //look into the documentation for this counter
        // mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); Dec. 23, 2021
        // String sensor_error = "No sensor"; Dec. 23, 2021
@@ -353,10 +472,25 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
     /**
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
     **/
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+    }
 }

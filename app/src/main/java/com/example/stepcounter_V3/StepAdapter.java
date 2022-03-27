@@ -1,10 +1,13 @@
 package com.example.stepcounter_V3;
 
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +16,11 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -100,6 +106,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
             {
                 ((GraphViewHolder)holder).graph.addSeries(stepSeries);
                 ((GraphViewHolder)holder).graph.addSeries(stepLineSeries);
+                //((GraphViewHolder)holder).graph.onDataChanged(true,false);
             }
 
             /**
@@ -178,12 +185,15 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
             {
                 super(graphView);
                 graph = graphView.findViewById(R.id.graph);
+                graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext()));
 
-                graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext(), dateFormat));
-                graph.getGridLabelRenderer().setNumHorizontalLabels(3);
-                graph.getLegendRenderer().setVisible(true);
-                graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-                //graph.getViewport().setXAxisBoundsManual(true);
+                //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext(), dateFormat));
+               // graph.getGridLabelRenderer().setNumHorizontalLabels(3); Jan 5, 2021
+               // graph.getLegendRenderer().setVisible(true);
+               // graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                //graph.getGridLabelRenderer().getVerticalLabelsVAlign(); //Feb. 15, 2022
+                //wow how cool is this to type of a big monitor (Typed on JD's wide screen monitor on March 16, 2022)
+                graph.getViewport().setXAxisBoundsManual(true);
                // graph.getViewport().setMinX(0);
                // graph.getViewport().setMaxX(100);
                 /**
@@ -198,34 +208,110 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                 }
                 testMin = recyclerData[0].getX();
                  **/
-                graph.getViewport().setMinX(recyclerData[0].getX());
-                graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
-                /**
-                minValue = (int)recyclerData[0].getX();
+                //graph.getViewport().setMinX(recyclerData[0].getX());
+                if(recyclerData.length == 1)
+                {
+                    graph.getGridLabelRenderer().setNumHorizontalLabels(1);
+                    graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                    graph.getViewport().setMinX(recyclerData[0].getX());
+
+                }
+                else if (recyclerData.length == 2)
+                {
+                    graph.getGridLabelRenderer().setNumHorizontalLabels(2);
+                    graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                    graph.getViewport().setMinX(recyclerData[0].getX());
+                }
+                else if (recyclerData.length > 2)
+                {
+                    graph.getGridLabelRenderer().setNumHorizontalLabels(3);
+                    graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                    graph.getViewport().setMinX(recyclerData[recyclerData.length-3].getX());
+                }
+               // graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX()); Jan 5, 2022
+
+                //code below is for finding the max Y and setting the viewport to have the maxY. Hasn't been tested yet Feb. 14, 2022
+
+                 maxValue = (int)recyclerData[0].getY();
                 for(int i = 0; i < recyclerData.length; i++)
                 {
-                    if(recyclerData[i].getX() < minValue)
+                    if(recyclerData[i].getY() > maxValue)
                     {
-                        minValue = (int)recyclerData[i].getX();
+                        maxValue = (int)recyclerData[i].getY();
                     }
 
                 }
-                graph.getViewport().setMinX(minValue);
+                graph.getViewport().setYAxisBoundsManual(true);
+                graph.getViewport().setMaxY(maxValue);
+
 
                 //graph.getViewport().setMinX(steps.get(0).getDate().getTime());
                 //graph.getViewport().setMaxX(steps.get(0).getDate().getTime() + 2*24*60*60*1000);
-                 **/
 
-                graph.getViewport().setYAxisBoundsManual(true);
+
+                //graph.getViewport().setYAxisBoundsManual(true);
                 graph.getViewport().setMinY(0);
-                graph.getViewport().setMaxY(100);
+                //graph.getViewport().setMaxY(100);
 
-                graph.getViewport().setScalable(true);
-                graph.getViewport().setScrollable(true);
-                graph.getViewport().setScrollableY(true);
+
+
+                //graph.getViewport().setScalable(true);
+                //graph.getViewport().setScrollable(true);
+                //graph.getViewport().setScrollableY(true);
                 graph.getViewport().setScalableY(true);
 
                 graph.getGridLabelRenderer().setHumanRounding(false);
+
+                //below code is reset graph viewport after zooming, has not been tested yet Feb. 14, 2022
+                graph.setOnTouchListener(new View.OnTouchListener(){
+                    GestureDetector gestureDetector = new GestureDetector(graph.getContext(), new GestureDetector.SimpleOnGestureListener(){
+                        @Override
+                        public boolean onDoubleTap(MotionEvent e) {
+                            /**
+                            graph.getViewport().setMinX(recyclerData[0].getX());
+                            graph.getViewport().setMinY(0);
+                            graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                            graph.getViewport().setMaxY(maxValue);
+                             **/
+
+                            graph.getViewport().setXAxisBoundsManual(true);
+                            if(recyclerData.length <= 3 )
+                            {
+                                graph.getViewport().setMinX(recyclerData[0].getX());
+                            }
+                            else
+                            {
+                                graph.getViewport().setMinX(recyclerData[recyclerData.length-3].getX());
+                            }
+                            //graph.getViewport().setMinX(recyclerData[0].getX());
+                            //graph.getViewport().setMinX(recyclerData[recyclerData.length-4].getX());
+                            graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
+                            graph.getViewport().setYAxisBoundsManual(true);
+                            graph.getViewport().setMinY(0);
+                            maxValue = (int)recyclerData[0].getY();
+                            for(int i = 0; i < recyclerData.length; i++)
+                            {
+                                if(recyclerData[i].getY() > maxValue)
+                                {
+                                    maxValue = (int)recyclerData[i].getY();
+                                }
+
+                            }
+                            graph.getViewport().setMaxY(maxValue);
+
+                            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext()));
+                            graph.getGridLabelRenderer().setNumHorizontalLabels(3);
+                            graph.onDataChanged(true, true);
+                            return super.onDoubleTap(e);
+                        }
+                    });
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return false;
+                    }
+                });
+
                 //graph.addSeries(stepSeries);
                 //graph.addSeries(stepLineSeries);
                // stepAdapter = adapter;

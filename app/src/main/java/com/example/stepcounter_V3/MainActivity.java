@@ -1,6 +1,7 @@
 package com.example.stepcounter_V3;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -9,8 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,6 +26,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,7 +65,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float stepValue = 0;
     private float valueCollect;
 
+    private StepServiceModule stepService;
+    private boolean isServiceBound;
+    private ServiceConnection serviceConnection;
+
     private StepViewModel mStepViewModel;
+    private NotificationManager mNotifyManager;
+    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
+    Intent serviceIntent;
     //private Button button;
 
 
@@ -74,12 +88,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ArrayList<Step> copyStepsTaken;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
     private ArrayList<PointsGraphSeries> portraitItemList;
+    Button toolBarButton;
+    boolean isItOn;
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
     public static final String EXTRA_REPLY =
             "com.example.stepcounter_V3.REPLY";
 
+    //the onOptionsItemSelected method was created in an attempt to determine whether the play or pause button should be
+    // shown on the tool bar if the activity is closed and then reopened.
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -87,14 +107,61 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         switch(item.getItemId())  //comment this out
        {
            case R.id.start_stepcounter:
-           //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+               //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
              //      startForegroundService(new Intent(MainActivity.this, StepServiceModule.class));
                //}
               // else
                //{
-               startService(new Intent(MainActivity.this, StepServiceModule.class));
+               //annotated with @Required Api(O)
+              // createNotificationChannel();
+              // serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
+              // startService(serviceIntent);
+               if(StepServiceModule.onOrOff != true)
+               {
+                   //createNotificationChannel();
+                   serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
+                   startService(serviceIntent); //the method startService calls the OnStartCommand, as per android documentation.
+                   //This causes the service to be started.
+                   //isItOn = true;
 
-               Drawable toolBarIcon = getResources().getDrawable(R.drawable.ic_start_counting);
+                   item.setIcon(R.drawable.ic_pause_counting);
+               }
+               else if (StepServiceModule.onOrOff == true)
+               {
+
+                   item.setIcon(R.drawable.ic_start_counting);
+                   serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
+                  // startService(serviceIntent);
+                   stopService(serviceIntent);
+                   //mNotifyManager.cancelAll();
+                   //item.setIcon(R.drawable.ic_start_counting);
+                   //isItOn = false;
+
+               }
+             /**  else
+               {
+                   serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
+                   startService(serviceIntent); //the method startService calls the OnStartCommand, as per android documentation.
+                   //This causes the service to be started.
+                   //isItOn = true;
+
+                   item.setIcon(R.drawable.ic_pause_counting);
+               } **/
+
+               /**if(item.getIcon().equals(R.drawable.ic_start_counting))
+           {
+               item.setIcon(R.drawable.ic_pause_counting);
+           }
+               else
+               {
+                   item.setIcon(R.drawable.ic_start_counting);
+               }
+                **/
+
+              // startService(new Intent(MainActivity.this, StepServiceModule.class));
+
+
+              /** Drawable toolBarIcon = getResources().getDrawable(R.drawable.ic_start_counting);
                Drawable.ConstantState defaultIcon = item.getIcon().getConstantState();
                Drawable defaultIcon2 = item.getIcon();
                //Bitmap bitmap = ((BitmapDrawable)toolBarIcon).getBitmap();
@@ -109,32 +176,90 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                    else
                    {
                        item.setIcon(R.drawable.ic_start_counting);
-                   }
+                   } **/
                     //comment this out
               // }
+               break;
           // default:
 
-          // case R.id.pause_stepcounter:
+          case R.id.pause_stepcounter:
+              stopService(serviceIntent);
+              item.setIcon(R.drawable.ic_start_counting);
+              break;
        }
         return super.onOptionsItemSelected(item);
 
     }
 
+   /** public void chooseToolBarButton()
+    {
+        if(StepServiceModule.isItOn() != true)
+        {
+            toolBarButton = (Button)findViewById(R.id.start_stepcounter);
+            toolBarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toolBarButton = (Button)findViewById(R.id.pause_stepcounter);
+                    serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
+                    startService(serviceIntent);
+                }
+            });
+        }
+        else
+        {
+            toolBarButton = (Button)findViewById(R.id.pause_stepcounter);
+            toolBarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toolBarButton = (Button)findViewById(R.id.start_stepcounter);
+                    stopService(serviceIntent);
+                    mNotifyManager.cancelAll();
+
+
+                }
+            });
+        }
+    } **/
+
+    //onCreate is the basic method where the contents of the screen are defined and inflated
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_main); //goes under res-->layout-->activity_main.xml
+
+        Toolbar toolbar = findViewById(R.id.toolbar); //goes under res--> layout-->activity_main.xml->reads the id named toolbar
         setSupportActionBar(toolbar);
+
+
+        //chooseToolBarButton();
+      //  toolBarButton = (Button)findViewById(R.id.start_stepcounter); //goes under res-->menu_main.xml
+        // -->reads the id named start_stepcounter
+
+       /** if(StepServiceModule.onOrOff != true)
+        {
+
+            toolBarButton.setBackgroundResource(R.drawable.ic_start_counting);
+        }
+        else
+        {
+            toolBarButton.setBackgroundResource(R.drawable.ic_pause_counting);
+        }**/
+        isItOn = false;
         valueCollect = 0;
        // mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE); Dec. 23, 2021
-        mTextStepCounter = (TextView)findViewById(R.id.label_steps);
+        mTextStepCounter = (TextView)findViewById(R.id.label_steps); //defining mTextstepCounter as the xml code
         mTextStepDetector = (TextView)findViewById(R.id.label_detector);
         mTextCounter = (TextView)findViewById(R.id.label_counter);
         mTestDay = (TextView)findViewById(R.id.get_day);
         mTestYear = (TextView)findViewById(R.id.get_year);
-        graphFab = findViewById(R.id.fab);
+        graphFab = findViewById(R.id.fab); //fab stands for floating action button and is programmed to add in the
+        //dummy values for testing. Should be deleted in the final product.
+        //bindService();
+        //createNotificationChannel();
 
+        //setting the listener so that when graph fab is pressed, it inserts the below data into the memory which is then
+        //displayed in the graph
         graphFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,8 +271,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //int day1 = 17;
                 //int year1 = 2020;
                 float step1 = 20;
-                Step step = new Step(year1, day1, date, step1);
-                mStepViewModel.insert(step);
+                Step step = new Step(year1, day1, date, step1); //creating a step object
+                mStepViewModel.insert(step); //inserting a step object
                 //int day2 = 17;
                 //int year2 = 2020;
                 float steps2 = 40;
@@ -237,6 +362,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
          **/
 
+        //look up running service info
+
 
         // Setup the WordViewModel
         mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
@@ -309,6 +436,45 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }   //add code for graph to update itself as it gets new data here
             }
         });
+
+    }
+
+    private void bindService() {
+        if (serviceConnection == null) //if there is no serviceConnection
+        {
+            //create a new serviceConnection object
+            serviceConnection = new ServiceConnection() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) { //called when the connection to a service has been established
+                    //stepService.
+                    isServiceBound = true;
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    isServiceBound = false;
+
+                }
+            };
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void createNotificationChannel()
+    {
+        mNotifyManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        //if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.0)
+        //{
+        NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
+                "Mascot Notification", NotificationManager.IMPORTANCE_HIGH);
+        //notificationChannel.enableLights(true);
+        //notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setDescription("Notification from Mascot");
+        mNotifyManager.createNotificationChannel(notificationChannel);
+//NotificationChannel notificationChannel2 = new NotificationChannel()
+        //}
     }
 
 
@@ -470,8 +636,61 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+      /**  if(StepServiceModule.onOrOff != true)
+        {
+            menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_start_counting);
+            //getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+        else
+        {
+            menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_pause_counting);
+           // getMenuInflater().inflate(R.menu.menu_main, menu);
+        }**/
+
+
         return true;
     }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if(StepServiceModule.onOrOff != true)
+        {
+           MenuItem item = menu.findItem(R.id.start_stepcounter);
+           item.setIcon(R.drawable.ic_start_counting);
+            //menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_start_counting);
+            //menu.getItem(R.id.start_stepcounter).setVisible(true);
+           //return true;
+
+        }
+        else
+        {
+            MenuItem item = menu.findItem(R.id.start_stepcounter);
+            item.setIcon(R.drawable.ic_pause_counting);
+            //menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_pause_counting);
+           // menu.getItem(R.id.pause_stepcounter).setVisible(true);
+            //return true;
+
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+
+
+    }
+
+
+  /**  @Override
+    public void onPrepareOptionsMenu( Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.action_done);
+        item.setVisible(isEditing);
+    } **/
+
+
+
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -482,15 +701,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        //stopService(serviceIntent);
+       // mNotifyManager.cancelAll();
+        //mNotifyManager.cancel("primary_notification_channel", 1);
+        super.onDestroy();
+    }
+
     /**
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
     **/
+
+
     @Override
     protected void onStop() {
+       // stopService(serviceIntent);
 
+
+       // mNotifyManager.cancelAll();
+        //mNotifyManager.cancel("primary_notification_channel", 1);
         super.onStop();
     }
 }

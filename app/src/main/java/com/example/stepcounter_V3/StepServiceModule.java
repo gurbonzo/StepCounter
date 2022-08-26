@@ -32,7 +32,9 @@ public class StepServiceModule extends Service implements SensorEventListener {
     String sensor_error;
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     private NotificationManager mNotifyManager;
-    private static final int NOTIFICATION_ID = 0;
+    private static final int NOTIFICATION_ID = 1;
+    public  int checkIfOn;
+    public static boolean onOrOff;
 
 
 
@@ -45,31 +47,51 @@ public class StepServiceModule extends Service implements SensorEventListener {
        // Notification notification = new Notification.Builder(this, CHANNEL_DEFAULT_IMPORTANCE)
         //        .setContentTitle()
         //startForeground(1, new Notification());
+
+        //NotificationCompat.Builder notification = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
+          //    .setContentTitle("StepCounter is active!")
+            //    .setContentText("This is your notification text.")
+             //   .setSmallIcon(R.drawable.ic_android);
+        //startForeground(1, new Notification());
+
+        Notification notification = new Notification.Builder(this, PRIMARY_CHANNEL_ID)
+                .setContentTitle("StepCounter is active!")
+                //.setContentText("This is your notification text.")
+                .setSmallIcon(R.drawable.ic_android)
+                .build();
+
+        startForeground(1, notification);
         mSensorManager =(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         //mTextStepDetector = (TextView) mTextStepDetector.findViewById(R.id.label_detector);
         sensor_error = "No sensor";
         mRepository = new StepRepository(getApplication());
-        createNotificationChannel();
+        //createNotificationChannel();
+        checkIfOn = 1;
+        onOrOff = true;
 
 
     }
 
+    /**
     private NotificationCompat.Builder getNotificationBuilder(){
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("StepCounter is active!")
                 //.setContentText("This is your notification text.")
                 .setSmallIcon(R.drawable.ic_android);
+        startForeground(0, new Notification());
+
         return notifyBuilder;
 
 
-    }
+    } **/
 
+    /**
     public void sendNotification() {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
 
-    }
+    } **/
 
 
 
@@ -88,7 +110,7 @@ public class StepServiceModule extends Service implements SensorEventListener {
          notificationChannel.enableVibration(true);
          notificationChannel.setDescription("Notification from Mascot");
          mNotifyManager.createNotificationChannel(notificationChannel);
-
+//NotificationChannel notificationChannel2 = new NotificationChannel()
      //}
      }
 
@@ -128,7 +150,9 @@ public class StepServiceModule extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //return super.onStartCommand(intent, flags, startId);
-        sendNotification();
+       // startForegroundService();
+        //startForeground(NOTIFICATION_ID, );
+        //sendNotification();
 
         if(mStepDetector == null)
         {
@@ -147,15 +171,38 @@ public class StepServiceModule extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
-        mNotifyManager.cancelAll();
-        //mNotifyManager.cancel("primary_notification_channel", 0);
+
+       // stopForeground(true);
+       // stopSelf();
+        //mNotifyManager.cancelAll();
+        //mNotifyManager.cancel("primary_notification_channel", 1);
+        onOrOff = false;
         super.onDestroy();
     }
 
+/**
+    @Override
+    public boolean stopService(Intent intent)
+    {
+        //mNotifyManager.cancelAll();
+        onOrOff = false;
+       return super.stopService(intent);
+    } **/
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public boolean isItOn()
+    {
+        if (checkIfOn == 1) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -26,7 +26,8 @@ public class StepRepository
 
     public void insert (Step step)
     {
-        new insertAsyncTask(mStepDao).execute(step);
+        new insertAsyncTask(mStepDao).execute(step); //creates a new insertAsyncTask object and then
+        // takes the step object and then sends it to doInBackground
     }
 
     /*public void update (Step step)
@@ -72,16 +73,17 @@ public class StepRepository
         @Override
         protected Void doInBackground(final Step... steps)
         {
-            int day = steps[0].getDay();
-            int year = steps[0].getYear();
-            boolean result = mAsyncTaskDao.getStep2(day, year);
+            int day = steps[0].getDay(); //extracts the day
+            int year = steps[0].getYear(); //extracts the year
+            boolean result = mAsyncTaskDao.getStep2(day, year); //if the day and year already exist then just add the steps to the
+            //existing total
             if (result == true)
             {
                 float value = mAsyncTaskDao.getSteps(day, year);
                 value += steps[0].getStep();
                 mAsyncTaskDao.updateSteps(value, day, year);
             }
-            else
+            else //if the day and year does not exist then insert the step object
             {
                 mAsyncTaskDao.insert(steps[0]);
             }

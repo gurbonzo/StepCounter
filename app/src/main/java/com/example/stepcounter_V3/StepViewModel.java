@@ -29,7 +29,7 @@ public class StepViewModel extends AndroidViewModel
 
     public void insert(Step step)
     {
-        mRepository.insert(step);
+        mRepository.insert(step); //inserting the steps into the StepRepository
         /*if(mRepository.getSteps(step))
         {
             float oldSteps = mRepository.getStep3(step).getStep();

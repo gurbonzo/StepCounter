@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Dao
-public interface StepDao
+public interface StepDao //dao stands for data access objects and is the object that interacts with the database
 {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert (Step step);

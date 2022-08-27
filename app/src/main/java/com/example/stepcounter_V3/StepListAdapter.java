@@ -20,12 +20,7 @@ public class StepListAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
     }
 
-    /*public StepViewHolder onCreateViewHolder()
-    {
 
-    }
-
-     */
     @Override
     public int getCount() {
         return 0;

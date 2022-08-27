@@ -46,25 +46,4 @@ public abstract class StepRoomDatabase extends RoomDatabase
                 }
             };
 
-   /* private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>
-    {
-        private final StepDao mDao;
-
-        public PopulateDbAsync(StepRoomDatabase db)
-        {
-            mDao = db.stepDao();
-        }
-
-        @Override
-        protected Void doInBackground(final Void... params)
-        {
-           if (mDao.getAnyStep().length < 1)
-           {
-
-           }
-           return null;
-        }
-    }
-
-    */
 }

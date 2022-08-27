@@ -63,40 +63,15 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
 
         }
 
-        /**
-        @Override
-        public int getItemViewType(int position) {
 
-
-            if(portraitItemList.get(position).getClass().getSimpleName().toLowerCase().contains("graphseries"))
-            {
-                return 0;
-            }
-            else if(portraitItemList.get(position).getClass().getSimpleName().toLowerCase().contains("float"))
-            {
-                return 1;
-            }
-            else
-            {
-                return 2;
-            }
-
-
-        }
-         **/
 
         @Override
         public GraphViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView;
-            //switch (viewType) {
-              //  case 0:
+
                     itemView = inflater.inflate(R.layout.portrait_graph_item, parent, false);
                     return new GraphViewHolder(itemView);
-               // case 1:
-                   // itemView = inflater.inflate(R.layout.portrait_item, parent, false);
-                   // return new StepViewHolder(itemView, this);
-            //}
-            //return null;
+
         }
 
         @Override
@@ -106,44 +81,23 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
             {
                 ((GraphViewHolder)holder).graph.addSeries(stepSeries);
                 ((GraphViewHolder)holder).graph.addSeries(stepLineSeries);
-                //((GraphViewHolder)holder).graph.onDataChanged(true,false);
+
             }
 
-            /**
-            if(portraitItemList != null)
-            {
-                if(portraitItemList.get(position).getClass().getSimpleName().toLowerCase().contains("graphseries")) {
-                    GraphViewHolder graphViewHolder = (GraphViewHolder)holder;
-                    graphViewHolder.graph.addSeries(new PointsGraphSeries<DataPoint>(new DataPoint[]
-                            {new DataPoint(0,0), new DataPoint(1,1), new DataPoint(2,1), new DataPoint(5,3), new DataPoint(7,7)}));
-                    Log.d("StepAdapter", String.valueOf(portraitItemList.get(position)));
-
-                }
-                else if(portraitItemList.get(position).getClass().getSimpleName().toLowerCase().contains("float"))
-                {
-                    //StepViewHolder stepViewHolder = (StepViewHolder)holder;
-                    //stepViewHolder.stepItemView.setText(portraitItemList.get(position));
-                }
-            }
-            else
-            {
-                // holder.stepItemView.setText("No word");
-            }
-             **/
 
         }
 
 
         void setInfo(DataPoint[] info)
         {
-           // recyclerData = new DataPoint[info.length];
+
             recyclerData = info;
-            //recyclerDatasize = recyclerData.length;
+
 
                 stepSeries.resetData(recyclerData);
                 stepLineSeries.resetData(recyclerData);
 
-            //this.steps = (List<Step>) portraitItemList.get(1);
+
             notifyDataSetChanged();
         }
 
@@ -151,7 +105,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
         public int getItemCount() {
 
             if (recyclerData != null) {
-                //return recyclerData.length;
+
                 return 1;
             }
             else
@@ -187,28 +141,12 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                 graph = graphView.findViewById(R.id.graph);
                 graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext()));
 
-                //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext(), dateFormat));
-               // graph.getGridLabelRenderer().setNumHorizontalLabels(3); Jan 5, 2021
-               // graph.getLegendRenderer().setVisible(true);
-               // graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-                //graph.getGridLabelRenderer().getVerticalLabelsVAlign(); //Feb. 15, 2022
+
                 //wow how cool is this to type of a big monitor (Typed on JD's wide screen monitor on March 16, 2022)
                 graph.getViewport().setXAxisBoundsManual(true);
-               // graph.getViewport().setMinX(0);
-               // graph.getViewport().setMaxX(100);
-                /**
-                maxValue = (int)recyclerData[0].getX();
-                for(int i = 0; i < recyclerData.length; i++)
-                {
-                    if(recyclerData[i].getX() > maxValue)
-                    {
-                        maxValue = (int)recyclerData[i].getX();
-                    }
 
-                }
-                testMin = recyclerData[0].getX();
-                 **/
-                //graph.getViewport().setMinX(recyclerData[0].getX());
+
+
                 if(recyclerData.length == 1)
                 {
                     graph.getGridLabelRenderer().setNumHorizontalLabels(1);
@@ -228,9 +166,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                     graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
                     graph.getViewport().setMinX(recyclerData[recyclerData.length-3].getX());
                 }
-               // graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX()); Jan 5, 2022
 
-                //code below is for finding the max Y and setting the viewport to have the maxY. Hasn't been tested yet Feb. 14, 2022
+
+                //code below is for finding the max Y and setting the viewport to have the maxY.
 
                  maxValue = (int)recyclerData[0].getY();
                 for(int i = 0; i < recyclerData.length; i++)
@@ -239,27 +177,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                     {
                         maxValue = (int)recyclerData[i].getY();
                     }
-
                 }
                 graph.getViewport().setYAxisBoundsManual(true);
                 graph.getViewport().setMaxY(maxValue);
-
-
-                //graph.getViewport().setMinX(steps.get(0).getDate().getTime());
-                //graph.getViewport().setMaxX(steps.get(0).getDate().getTime() + 2*24*60*60*1000);
-
-
-                //graph.getViewport().setYAxisBoundsManual(true);
                 graph.getViewport().setMinY(0);
-                //graph.getViewport().setMaxY(100);
-
-
-
-                //graph.getViewport().setScalable(true);
-                //graph.getViewport().setScrollable(true);
-                //graph.getViewport().setScrollableY(true);
                 graph.getViewport().setScalableY(true);
-
                 graph.getGridLabelRenderer().setHumanRounding(false);
 
                 //below code is reset graph viewport after zooming, has not been tested yet Feb. 14, 2022
@@ -267,12 +189,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                     GestureDetector gestureDetector = new GestureDetector(graph.getContext(), new GestureDetector.SimpleOnGestureListener(){
                         @Override
                         public boolean onDoubleTap(MotionEvent e) {
-                            /**
-                            graph.getViewport().setMinX(recyclerData[0].getX());
-                            graph.getViewport().setMinY(0);
-                            graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
-                            graph.getViewport().setMaxY(maxValue);
-                             **/
 
                             graph.getViewport().setXAxisBoundsManual(true);
                             if(recyclerData.length <= 3 )
@@ -283,8 +199,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                             {
                                 graph.getViewport().setMinX(recyclerData[recyclerData.length-3].getX());
                             }
-                            //graph.getViewport().setMinX(recyclerData[0].getX());
-                            //graph.getViewport().setMinX(recyclerData[recyclerData.length-4].getX());
+
                             graph.getViewport().setMaxX(recyclerData[recyclerData.length-1].getX());
                             graph.getViewport().setYAxisBoundsManual(true);
                             graph.getViewport().setMinY(0);
@@ -312,9 +227,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
                     }
                 });
 
-                //graph.addSeries(stepSeries);
-                //graph.addSeries(stepLineSeries);
-               // stepAdapter = adapter;
+
             }
         }
     }

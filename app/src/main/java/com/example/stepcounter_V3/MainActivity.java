@@ -73,22 +73,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private NotificationManager mNotifyManager;
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     Intent serviceIntent;
-    //private Button button;
 
 
 
-   // private PointsGraphSeries<DataPoint> stepSeries;
-   // private LineGraphSeries<DataPoint> stepLineSeries;
-   // private GraphView graph;
-    // private TextView averageStepCounter;
-    // private TextView maxSteps;
-    // private TextView minSteps;
-    // private TextView averageWeeklySteps;
+
     ArrayList<Step> stepsTaken;
     ArrayList<Step> copyStepsTaken;
-    final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-    private ArrayList<PointsGraphSeries> portraitItemList;
-    Button toolBarButton;
+
+
+
     boolean isItOn;
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
@@ -107,22 +100,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         switch(item.getItemId())  //comment this out
        {
            case R.id.start_stepcounter:
-               //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-             //      startForegroundService(new Intent(MainActivity.this, StepServiceModule.class));
-               //}
-              // else
-               //{
-               //annotated with @Required Api(O)
-              // createNotificationChannel();
-              // serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
-              // startService(serviceIntent);
+
                if(StepServiceModule.onOrOff != true)
                {
-                   //createNotificationChannel();
+
                    serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
                    startService(serviceIntent); //the method startService calls the OnStartCommand, as per android documentation.
                    //This causes the service to be started.
-                   //isItOn = true;
 
                    item.setIcon(R.drawable.ic_pause_counting);
                }
@@ -131,56 +115,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                    item.setIcon(R.drawable.ic_start_counting);
                    serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
-                  // startService(serviceIntent);
                    stopService(serviceIntent);
-                   //mNotifyManager.cancelAll();
-                   //item.setIcon(R.drawable.ic_start_counting);
-                   //isItOn = false;
-
                }
-             /**  else
-               {
-                   serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
-                   startService(serviceIntent); //the method startService calls the OnStartCommand, as per android documentation.
-                   //This causes the service to be started.
-                   //isItOn = true;
 
-                   item.setIcon(R.drawable.ic_pause_counting);
-               } **/
-
-               /**if(item.getIcon().equals(R.drawable.ic_start_counting))
-           {
-               item.setIcon(R.drawable.ic_pause_counting);
-           }
-               else
-               {
-                   item.setIcon(R.drawable.ic_start_counting);
-               }
-                **/
-
-              // startService(new Intent(MainActivity.this, StepServiceModule.class));
-
-
-              /** Drawable toolBarIcon = getResources().getDrawable(R.drawable.ic_start_counting);
-               Drawable.ConstantState defaultIcon = item.getIcon().getConstantState();
-               Drawable defaultIcon2 = item.getIcon();
-               //Bitmap bitmap = ((BitmapDrawable)toolBarIcon).getBitmap();
-               //Bitmap bitmap2 = ((BitmapDrawable)defaultIcon2).getBitmap();
-
-                   if(item.getIcon().getConstantState().equals(toolBarIcon.getConstantState()))
-               //if(bitmap == bitmap2)
-                   {
-                       startService(new Intent(MainActivity.this, StepServiceModule.class));
-                       item.setIcon(R.drawable.ic_pause_counting);
-                   }
-                   else
-                   {
-                       item.setIcon(R.drawable.ic_start_counting);
-                   } **/
-                    //comment this out
-              // }
                break;
-          // default:
+
 
           case R.id.pause_stepcounter:
               stopService(serviceIntent);
@@ -191,35 +130,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-   /** public void chooseToolBarButton()
-    {
-        if(StepServiceModule.isItOn() != true)
-        {
-            toolBarButton = (Button)findViewById(R.id.start_stepcounter);
-            toolBarButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toolBarButton = (Button)findViewById(R.id.pause_stepcounter);
-                    serviceIntent = new Intent(MainActivity.this, StepServiceModule.class);
-                    startService(serviceIntent);
-                }
-            });
-        }
-        else
-        {
-            toolBarButton = (Button)findViewById(R.id.pause_stepcounter);
-            toolBarButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toolBarButton = (Button)findViewById(R.id.start_stepcounter);
-                    stopService(serviceIntent);
-                    mNotifyManager.cancelAll();
-
-
-                }
-            });
-        }
-    } **/
 
     //onCreate is the basic method where the contents of the screen are defined and inflated
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -232,22 +142,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setSupportActionBar(toolbar);
 
 
-        //chooseToolBarButton();
-      //  toolBarButton = (Button)findViewById(R.id.start_stepcounter); //goes under res-->menu_main.xml
-        // -->reads the id named start_stepcounter
-
-       /** if(StepServiceModule.onOrOff != true)
-        {
-
-            toolBarButton.setBackgroundResource(R.drawable.ic_start_counting);
-        }
-        else
-        {
-            toolBarButton.setBackgroundResource(R.drawable.ic_pause_counting);
-        }**/
         isItOn = false;
         valueCollect = 0;
-       // mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE); Dec. 23, 2021
+
         mTextStepCounter = (TextView)findViewById(R.id.label_steps); //defining mTextstepCounter as the xml code
         mTextStepDetector = (TextView)findViewById(R.id.label_detector);
         mTextCounter = (TextView)findViewById(R.id.label_counter);
@@ -255,8 +152,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mTestYear = (TextView)findViewById(R.id.get_year);
         graphFab = findViewById(R.id.fab); //fab stands for floating action button and is programmed to add in the
         //dummy values for testing. Should be deleted in the final product.
-        //bindService();
-        //createNotificationChannel();
+
 
         //setting the listener so that when graph fab is pressed, it inserts the below data into the memory which is then
         //displayed in the graph
@@ -328,65 +224,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Step step7 = new Step(year7, day7, date7, steps7);
                 mStepViewModel.insert(step7);
 
-
-
-
-
-
-                //int day2 = 18;
-                //int year2 = 2020;
-                //float step2 = 40;
-                //Step stepv2 = new Step(year2, day2, step2);
-                // mStepViewModel.insert(stepv2);
-
-
-
-
-                // mTestDay.setText("Day: " + calendar.get(Calendar.DAY_OF_MONTH));
-                //mTestYear.setText("Year: " + calendar.get(Calendar.YEAR));
-
-
-
             }
         });
-        //mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER); //look into the documentation for this counter
-       // mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); Dec. 23, 2021
-       // String sensor_error = "No sensor"; Dec. 23, 2021
-        /**
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, StepServiceModule.class));
-        }
-        else
-        {
-            startService(new Intent(this, StepServiceModule.class));
-        }
-         **/
 
-        //look up running service info
-
-
-        // Setup the WordViewModel
         mStepViewModel = ViewModelProviders.of(this).get(StepViewModel.class);
-        /*if(mStepCounter == null)
-        {
-            mTextStepCounter.setText(sensor_error);
-        }
-
-         */
-        /** Dec. 23, 2021
-        if(mStepDetector == null)
-        {
-            mTextStepDetector.setText(sensor_error);
-        }
-         **/
-         //button = findViewById(R.id.button_save);
-
-        //Toast.makeText(getApplicationContext(), "onCreate initialized", Toast.LENGTH_LONG).show();
-      //  stepSeries = new PointsGraphSeries();
-       // stepLineSeries = new LineGraphSeries();
-
-
-
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
         final StepAdapter adapter = new StepAdapter(this);
@@ -414,12 +255,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
                     for (int i = 0; i < steps.size(); i++) {
-                        //int xValue = steps.get(i).getDay();
+
                         stepsTaken.add(steps.get(i));
                         copyStepsTaken.add(steps.get(i));
-                        //String xValue = sdf.format(steps.get(i).getDate());
+
                         Date xValue = steps.get(i).getDate();
-                       // int xValue = steps.get(i).getDay();
+
 
                         int yValue = (int) steps.get(i).getStep();
 
@@ -427,13 +268,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         stepData[i] = stepPoint;
                     }
 
-
-                   // stepSeries.resetData(stepData);
-                   // stepLineSeries.resetData(stepData);
-                   // graph.addSeries(stepLineSeries);
-                   // graph.addSeries(stepSeries);
                     adapter.setInfo(stepData);
-                }   //add code for graph to update itself as it gets new data here
+                }
             }
         });
 
@@ -473,43 +309,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         notificationChannel.enableVibration(true);
         notificationChannel.setDescription("Notification from Mascot");
         mNotifyManager.createNotificationChannel(notificationChannel);
-//NotificationChannel notificationChannel2 = new NotificationChannel()
-        //}
-    }
 
+    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
 
-
-       /* if(mStepCounter != null)
-        {
-            mSensorManager.registerListener(this, mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
-        }
-
-        */
-       /** Dec. 23, 2021
-        if(mStepDetector != null)
-        {
-            mSensorManager.registerListener(this, mStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-        **/
     }
 
-    /**
-    public void graph(View view)
-    {
-        Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
-        startActivity(intent);
-
-    }
-     **/
 
     public void onButtonPressed(View view) {
-
-
 
                 Calendar calendar = Calendar.getInstance();
                 Date date = calendar.getTime();
@@ -577,21 +388,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mStepViewModel.insert(step7);
 
 
-                //int day2 = 18;
-                //int year2 = 2020;
-                //float step2 = 40;
-                //Step stepv2 = new Step(year2, day2, step2);
-               // mStepViewModel.insert(stepv2);
-
-
-
-
-               // mTestDay.setText("Day: " + calendar.get(Calendar.DAY_OF_MONTH));
-                //mTestYear.setText("Year: " + calendar.get(Calendar.YEAR));
-
-
                 Toast.makeText(this, "starting insert", Toast.LENGTH_LONG).show();
-                    //mStepViewModel.insert(step);
+
                     Toast.makeText(this, "insert worked", Toast.LENGTH_LONG).show();
 
 
@@ -608,46 +406,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
          valueCollect = value;
     }
 
-    /** Dec. 23, 2021
-    @Override
-    public void onSensorChanged(SensorEvent event) {
 
-       // int sensorType = event.sensor.getType();
-        float currentValue = event.values[0];
-
-
-
-           // mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
-                Calendar calendar = Calendar.getInstance();
-                Date date = calendar.getTime();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int year = calendar.get(Calendar.YEAR);
-                Step step = new Step(year, day, date, currentValue);
-                mStepViewModel.insert(step);
-           // stepValue += currentValue;
-         //   mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
-
-
-
-
-
-    }
-     **/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-      /**  if(StepServiceModule.onOrOff != true)
-        {
-            menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_start_counting);
-            //getMenuInflater().inflate(R.menu.menu_main, menu);
-        }
-        else
-        {
-            menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_pause_counting);
-           // getMenuInflater().inflate(R.menu.menu_main, menu);
-        }**/
-
 
         return true;
     }
@@ -660,18 +422,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         {
            MenuItem item = menu.findItem(R.id.start_stepcounter);
            item.setIcon(R.drawable.ic_start_counting);
-            //menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_start_counting);
-            //menu.getItem(R.id.start_stepcounter).setVisible(true);
-           //return true;
+
 
         }
         else
         {
             MenuItem item = menu.findItem(R.id.start_stepcounter);
             item.setIcon(R.drawable.ic_pause_counting);
-            //menu.getItem(R.id.start_stepcounter).setIcon(R.drawable.ic_pause_counting);
-           // menu.getItem(R.id.pause_stepcounter).setVisible(true);
-            //return true;
+
 
         }
 
@@ -679,16 +437,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
-
-
-  /**  @Override
-    public void onPrepareOptionsMenu( Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem item = menu.findItem(R.id.action_done);
-        item.setVisible(isEditing);
-    } **/
-
-
 
 
 
@@ -704,27 +452,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onDestroy() {
-        //stopService(serviceIntent);
-       // mNotifyManager.cancelAll();
-        //mNotifyManager.cancel("primary_notification_channel", 1);
+
         super.onDestroy();
     }
-
-    /**
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-    **/
 
 
     @Override
     protected void onStop() {
-       // stopService(serviceIntent);
-
-
-       // mNotifyManager.cancelAll();
-        //mNotifyManager.cancel("primary_notification_channel", 1);
         super.onStop();
     }
 }

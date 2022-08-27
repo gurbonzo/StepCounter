@@ -43,10 +43,7 @@ public class GraphActivity extends AppCompatActivity {
     private PointsGraphSeries<DataPoint> stepSeries;
     private LineGraphSeries<DataPoint> stepLineSeries;
     private GraphView graph;
-   // private TextView averageStepCounter;
-   // private TextView maxSteps;
-   // private TextView minSteps;
-   // private TextView averageWeeklySteps;
+
     ArrayList<Step> stepsTaken;
     ArrayList<Step> copyStepsTaken;
     final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
@@ -59,7 +56,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         graph = (GraphView) findViewById(R.id.graph);
 
-        //final StepAdapter adapter = new StepAdapter(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Calendar calendar = Calendar.getInstance();
@@ -95,10 +92,10 @@ public class GraphActivity extends AppCompatActivity {
 
 
                     for (int i = 0; i < steps.size(); i++) {
-                        //int xValue = steps.get(i).getDay();
+
                         stepsTaken.add(steps.get(i));
                         copyStepsTaken.add(steps.get(i));
-                        //String xValue = sdf.format(steps.get(i).getDate());
+
                         Date xValue = steps.get(i).getDate();
 
                         int yValue = (int) steps.get(i).getStep();
@@ -137,18 +134,6 @@ public class GraphActivity extends AppCompatActivity {
                 }   //add code for graph to update itself as it gets new data here
             }
         });
-
-        /**
-        RecyclerView recyclerView = findViewById(R.id.recyclerview); //inflates the recyclerview
-        final StepAdapter adapter = new StepAdapter(this, portraitItemList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-         **/
-
-
-
-
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -42,17 +42,7 @@ public class StepServiceModule extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
-       // Intent notificationIntent = new Intent(this, MainActivity.class);
-       // PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
-       // Notification notification = new Notification.Builder(this, CHANNEL_DEFAULT_IMPORTANCE)
-        //        .setContentTitle()
-        //startForeground(1, new Notification());
 
-        //NotificationCompat.Builder notification = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
-          //    .setContentTitle("StepCounter is active!")
-            //    .setContentText("This is your notification text.")
-             //   .setSmallIcon(R.drawable.ic_android);
-        //startForeground(1, new Notification());
 
         Notification notification = new Notification.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("StepCounter is active!")
@@ -63,38 +53,15 @@ public class StepServiceModule extends Service implements SensorEventListener {
         startForeground(1, notification);
         mSensorManager =(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        //mTextStepDetector = (TextView) mTextStepDetector.findViewById(R.id.label_detector);
+
         sensor_error = "No sensor";
         mRepository = new StepRepository(getApplication());
-        //createNotificationChannel();
+
         checkIfOn = 1;
         onOrOff = true;
 
 
     }
-
-    /**
-    private NotificationCompat.Builder getNotificationBuilder(){
-        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
-                .setContentTitle("StepCounter is active!")
-                //.setContentText("This is your notification text.")
-                .setSmallIcon(R.drawable.ic_android);
-        startForeground(0, new Notification());
-
-        return notifyBuilder;
-
-
-    } **/
-
-    /**
-    public void sendNotification() {
-        NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-
-    } **/
-
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -120,23 +87,14 @@ public class StepServiceModule extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        // int sensorType = event.sensor.getType();
         float currentValue = event.values[0];
 
-
-
-        // mTextStepDetector.setText(getResources().getString(R.string.label_detector, currentValue));
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int year = calendar.get(Calendar.YEAR);
         Step step = new Step(year, day, date, currentValue);
         mRepository.insert(step);
-        // stepValue += currentValue;
-        //   mTextCounter.setText(getResources().getString(R.string.label_counter, stepValue));
-
-
-
 
 
     }
@@ -149,10 +107,7 @@ public class StepServiceModule extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //return super.onStartCommand(intent, flags, startId);
-       // startForegroundService();
-        //startForeground(NOTIFICATION_ID, );
-        //sendNotification();
+
 
         if(mStepDetector == null)
         {
@@ -171,23 +126,10 @@ public class StepServiceModule extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
-
-       // stopForeground(true);
-       // stopSelf();
-        //mNotifyManager.cancelAll();
-        //mNotifyManager.cancel("primary_notification_channel", 1);
         onOrOff = false;
         super.onDestroy();
     }
 
-/**
-    @Override
-    public boolean stopService(Intent intent)
-    {
-        //mNotifyManager.cancelAll();
-        onOrOff = false;
-       return super.stopService(intent);
-    } **/
 
     @Nullable
     @Override

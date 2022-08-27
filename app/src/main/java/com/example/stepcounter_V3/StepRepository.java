@@ -30,36 +30,6 @@ public class StepRepository
         // takes the step object and then sends it to doInBackground
     }
 
-    /*public void update (Step step)
-    {
-        new updateAsyncTask(mStepDao).execute(step);
-    }
-
-     */
-
-
-
-    /*public void getStep3(Step step)  {
-
-        //return new getStep2AsyncTask(mStepDao).execute(step);
-    }
-
-     */
-
-    /*public boolean getSteps(Step step)
-    {
-        boolean result = Boolean.parseBoolean(String.valueOf(new getStepsAsyncTask(mStepDao).execute(step)));
-        return result;
-
-        //return mStepDao.getSteps(day, year);
-
-    }
-
-     */
-
-
-
-
 
     private static class insertAsyncTask extends AsyncTask<Step, Void, Void>
     {
@@ -92,80 +62,4 @@ public class StepRepository
 
 
     }
-
-    /*private static class updateAsyncTask extends AsyncTask<Step, Void, Void>
-    {
-        private StepDao mAsyncTaskDao;
-        private int day;
-        private int year;
-        updateAsyncTask(StepDao dao)
-        {
-            mAsyncTaskDao = dao;
-            //this.day = day;
-            //this.year = year;
-        }
-
-        @Override
-        protected Void doInBackground(final Step... steps) {
-
-            float stepCount = steps[0].getStep();
-            day = steps[0].getDay();
-            year = steps[0].getYear();
-
-
-            mAsyncTaskDao.updateSteps(stepCount, day, year); //previously stepCount was written where steps in currently
-            return null;
-        }
-    }
-
-     */
-
-
-    /*private class getStepsAsyncTask extends AsyncTask<Step, Void, Boolean> {
-
-        private StepDao mAsyncTaskDao;
-        public getStepsAsyncTask(StepDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(Step... steps) {
-            int day = steps[0].getDay();
-            int year = steps[0].getYear();
-
-            if(mAsyncTaskDao.getSteps(day, year).length < 1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-
-
-
-
-
-        }
-    }
-
-     */
-
-    /*private class getStep2AsyncTask extends AsyncTask<Step, Void, Step> {
-        private StepDao mAsyncTaskDao;
-        public getStep2AsyncTask(StepDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Step doInBackground(Step... steps) {
-            int day = steps[0].getDay();
-            int year = steps[0].getYear();
-            return mAsyncTaskDao.getStep2(day, year);
-
-        }
-    }
-
-     */
 }

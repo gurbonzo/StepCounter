@@ -59,8 +59,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.GraphViewHolde
             stepSeries = new PointsGraphSeries<>();
             stepLineSeries = new LineGraphSeries<>();
 
-
-
         }
 
 

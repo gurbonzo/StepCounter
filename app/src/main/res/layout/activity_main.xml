@@ -37,51 +37,6 @@
 
         <!--app:layout_constraintRight_toRightOf="parent"-->
 
-    <TextView
-        android:id="@+id/label_detector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_detector"
-        app:layout_constraintTop_toBottomOf="@+id/label_steps" />
-
-    <TextView
-        android:id="@+id/label_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_counter"
-        app:layout_constraintTop_toBottomOf="@+id/label_detector" />
-
-    <TextView
-        android:id="@+id/get_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/label_counter"/>
-    <TextView
-        android:id="@+id/get_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/get_day"/>
-
-
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onButtonPressed"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_fab_icon"
-        android:layout_margin="16dp" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"

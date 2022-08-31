@@ -31,18 +31,16 @@ public class StepServiceModule extends Service implements SensorEventListener {
     private StepRepository mRepository;
     String sensor_error;
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
-    private NotificationManager mNotifyManager;
-    private static final int NOTIFICATION_ID = 1;
-    public  int checkIfOn;
-    public static boolean onOrOff;
+    //private NotificationManager mNotifyManager;
+   // private static final int NOTIFICATION_ID = 1;
 
+    public static boolean onOrOff;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         Notification notification = new Notification.Builder(this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("StepCounter is active!")
@@ -57,32 +55,8 @@ public class StepServiceModule extends Service implements SensorEventListener {
         sensor_error = "No sensor";
         mRepository = new StepRepository(getApplication());
 
-        checkIfOn = 1;
         onOrOff = true;
-
-
     }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createNotificationChannel()
-     {
-     mNotifyManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-     //if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.0)
-     //{
-     NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
-     "Mascot Notification", NotificationManager.IMPORTANCE_HIGH);
-         //notificationChannel.enableLights(true);
-         //notificationChannel.setLightColor(Color.RED);
-         notificationChannel.enableVibration(true);
-         notificationChannel.setDescription("Notification from Mascot");
-         mNotifyManager.createNotificationChannel(notificationChannel);
-//NotificationChannel notificationChannel2 = new NotificationChannel()
-     //}
-     }
-
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -96,7 +70,6 @@ public class StepServiceModule extends Service implements SensorEventListener {
         Step step = new Step(year, day, date, currentValue);
         mRepository.insert(step);
 
-
     }
 
     @Override
@@ -104,10 +77,8 @@ public class StepServiceModule extends Service implements SensorEventListener {
 
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
 
         if(mStepDetector == null)
         {
@@ -119,10 +90,7 @@ public class StepServiceModule extends Service implements SensorEventListener {
         }
 
         return START_STICKY;
-
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -130,21 +98,9 @@ public class StepServiceModule extends Service implements SensorEventListener {
         super.onDestroy();
     }
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    public boolean isItOn()
-    {
-        if (checkIfOn == 1) {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 }
